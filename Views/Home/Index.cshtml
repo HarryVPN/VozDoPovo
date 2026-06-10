@@ -1,0 +1,58 @@
+﻿@using VozDoPovo.Data
+@using System.Text.Json
+@model List<DenunciaModel>
+@{
+    ViewData["Title"] = "Início";
+}
+
+<body class="text-center">
+
+    <div role="alert" class="alert alert-success">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        Bem vindo ao site!
+    </div>
+
+
+    @if (TempData[MeusIDs.Sucesso] != null)
+    {
+        JsonDenuncia? denuncia = JsonSerializer.Deserialize<JsonDenuncia>(TempData[MeusIDs.Sucesso].ToString());
+        if (denuncia != null)
+        {
+            <div role="alert" class="alert alert-success">
+                <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+                Denuncia #@denuncia.id adicionada!
+            </div>
+        }
+    }
+
+    <h1>Denuncias Recentes</h1>
+
+    <table class="table table-hover align-middle table-responsive p-0">
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var denuncia in Model.OrderBy(x => x.id))
+                {
+                    <tr data-id="@denuncia.id">
+
+                        @if (denuncia.imagem != null)
+                        {
+                            <td class="align-middle">
+                                <img src="~/images/@denuncia.imagem" width="150" />
+                            </td>
+                        }
+
+                        <td class="align-middle">
+                            <h6 class="text-sm mb-0">
+                                @denuncia.contexto
+                            </h6>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+
+
+    </table>
+</body>

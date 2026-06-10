@@ -1,0 +1,13 @@
+﻿@model ContatoModel
+@{
+    ViewData["Title"] = "Criar Contato";
+}
+<h1>Adicionar Novo Contato</h1>
+<small class="form-text text-muted">Ao se cadastrar, voce aceita que LGPD não existe e todos os seus dados podem ser utilizados</small>
+
+<form asp-controller="Contato" asp-action="Criar" method="post">
+
+    <partial name="_Formulario"/>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

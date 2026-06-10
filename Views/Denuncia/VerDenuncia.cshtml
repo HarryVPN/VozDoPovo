@@ -1,0 +1,14 @@
+﻿@model ContatoModel
+@{
+    ViewData["Title"] = "EDITAR";
+}
+<h1>Editando Usuário #@Model.Id (@Model.Nome)</h1>
+
+<form asp-controller="Contato" asp-action="Editar" method="post">
+    
+    <input type="hidden" asp-for="Id"/>
+
+    <partial name="_Formulario"/>
+
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+</form>
