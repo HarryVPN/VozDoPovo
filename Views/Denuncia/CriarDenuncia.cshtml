@@ -1,56 +1,14 @@
-﻿@using VozDoPovo.Data
-@model DenunciaModel
-@{
-    ViewData["Title"] = "Criar Contato";
-}
+﻿@model DenunciaModel
+@* @{
+    ViewData["Title"] = "Criar Denuncia";
+} *@
 
 <head>
-
     <h1>Fazer uma Denuncia</h1>
     <small class="form-text text-muted">Descreva bem a situação</small>
-
 </head>
 
-<style>
-    .item {
-        margin-bottom: 20px;
-    }
-</style>
-<body>
+<form asp-action="DenunciaCriada" method="post" enctype="multipart/form-data" class="text-lg-start">
 
-    <form asp-action="DenunciaCriada" method="post" enctype="multipart/form-data" class="text-lg-start">
-
-        <div class="form-group item">
-            <label for="contexto">Denuncia</label>
-            <textarea required asp-for="contexto" rows="6" cols="50" id="contexto" class="form-control" placeholder="Explique seu problema"></textarea>
-
-        </div>
-
-        <div class="form-group item">
-            <label for="imagemInput">Imagem (opcional)</label>
-            <input asp-for="arquivoImg" type="file" accept="image/*" id="imagemInput" class="form-control item" placeholder="Digite o Nome" />
-            <img id="preview" style="max-width:300px; display:none;" />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </form>
-
-</body>
-
-<script>
-    //Mostra imagem após ser selecionada
-        const imagemInput = document.getElementById('imagemInput');
-        const preview = document.getElementById('preview');
-
-        imagemInput.addEventListener('change', function () {
-
-            const file = this.files[0];
-
-            if (!file) {
-                preview.style.display = 'none';
-                return;
-            }
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-        });
-</script>
+    <partial name ="_Shared/Formulario" />
+</form>

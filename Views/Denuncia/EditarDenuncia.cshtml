@@ -1,14 +1,16 @@
-﻿@model ContatoModel
+﻿@model DenunciaModel
 @{
-    ViewData["Title"] = "EDITAR";
+    ViewData["Title"] = "Editar Denuncia";
 }
-<h1>Editando Usuário #@Model.Id (@Model.Nome)</h1>
 
-<form asp-controller="Contato" asp-action="Editar" method="post">
-    
-    <input type="hidden" asp-for="Id"/>
+<head>
+    <h1>Edite sua Denuncia</h1>
+    <small class="form-text text-muted">Descreva bem a situação</small>
+</head>
 
-    <partial name="_Formulario"/>
+<form asp-action="DenunciaEditada" method="post" enctype="multipart/form-data" class="text-lg-start">
+    <input type="hidden" asp-for="id" />
+    <partial name="_Shared/Formulario" />
 
-    <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a role="button" class="btn btn-danger" asp-controller="Denuncia" asp-action="DeletarDenuncia" asp-route-id="@Model.id">Deletar</a>
 </form>

@@ -7,6 +7,8 @@
 
 <body class="text-center">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <div role="alert" class="alert alert-success">
         <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
         Bem vindo ao site!
@@ -27,32 +29,85 @@
 
     <h1>Denuncias Recentes</h1>
 
-    <table class="table table-hover align-middle table-responsive p-0">
+    <table class="table table-hover align-middle table-responsive p-3 container shadow">
         <tbody>
             @if (Model != null && Model.Any())
             {
                 @foreach (var denuncia in Model.OrderBy(x => x.id))
                 {
-                    <tr data-id="@denuncia.id">
+                    <div data-id="@denuncia.id" class="card shadow border-4 rounded-4 p-2" style="margin-bottom:10px">
 
-                        @if (denuncia.imagem != null)
-                        {
-                            <td class="align-middle">
-                                <img src="~/images/@denuncia.imagem" width="150" />
-                            </td>
-                        }
+                        <div class="d-flex justify-content-between border-bottom border-4 pb-2 mb-2">
+                            @* <span>João Pedro Cunha</span> *@
+                            <span>@denuncia.data</span>
 
-                        <td class="align-middle">
-                            <h6 class="text-sm mb-0">
+                            <i class="glyphicon glyphicon-thumbs-up"></i>
+                            <a role="button" class="btn btn-primary" asp-controller="Denuncia" asp-action="EditarDenuncia" asp-route-id="@denuncia.id">Editar</a>
+                        </div>
+                        <div class="position-relative" style="min-height:300px;">
+
+                            <div class="pe-5" style="margin-right:220px; text-align:justify">
                                 @denuncia.contexto
-                            </h6>
-                        </td>
+                            </div>
 
-                    </tr>
+                            @if (denuncia.imagem != null)
+                            {
+                                <div class="position-absolute top-0 end-0 border border-2 p-0" style="width:220px;height:300px;">
+                                    <img src="~/images/@denuncia.imagem" class="img-fluid h-100 w-100 object-fit-cover">
+                                </div>
+                            }
+                        </div>
+
+                    </div>
                 }
             }
         </tbody>
-
-
     </table>
+   
 </body>
+
+                            
+@* <div class="container shadow">
+    <div class="forms">
+        <div class="form login">
+            <img src="~/Auth/images/logo-bol.png" class="img-fluid title" alt="Imagem">
+            <form class="loadForm" asp-controller="Auth" asp-action="Entrar" method="post">
+                <div class="input-field">
+                    <input type="text" id="id" name="id" asp-for="id" placeholder="Digite seu Login ou CPF" required
+                           autocomplete="new-text" value="@Model?.id">
+                    <i class="uil uil-user"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="senha" name="senha" asp-for="senha" class="password"
+                           placeholder="Digite sua Senha" required autocomplete="new-password" value="@Model?.senha">
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+                <div class="checkbox-text">
+                    <div class="checkbox-content">
+                        <input type="checkbox" class="cyberpunk-checkbox" id="lembrarCredenciais"
+                               name="lembrarCredenciais" value="true">
+                        <label for="lembrarCredenciais" class="text" style="margin-bottom: 3px;">Lembre de mim</label>
+                    </div>
+
+                    <a asp-controller="Auth" asp-action="Recuperar" class="text">Esqueceu sua senha?</a>
+                </div>
+                <div class="input-field button">
+                    <button class="btn btn-block" type="submit" id="submitButton"
+                            style="background-color: #2d5980; color: white; outline: none; box-shadow: none;">
+                        <span class="button-text">Conectar</span>
+                        <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
+                            <span class="visually-hidden"></span>
+                        </div>
+                    </button>
+                </div>
+            </form>
+            <div class="login-signup">
+                <span class="text">
+                    Não tem cadastro?
+                    <a asp-controller="Auth" asp-action="New" class="text signup-link">Cadastrar-se</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div> *@

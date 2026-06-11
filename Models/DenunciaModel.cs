@@ -6,7 +6,9 @@ namespace VozDoPovo.Models
     {
         public int id { get; set; }
         public string? imagem { get; set; }
-        public required string contexto { get; set; }
+        public string contexto { get; set; }
+
+        public DateTime data { get; set; }
         
         [NotMapped] 
         public virtual IFormFile? arquivoImg { get; set; }

@@ -1,0 +1,48 @@
+﻿@model DenunciaModel
+
+<style>
+    .item {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="form-group item">
+    <label for="contexto">Denuncia</label>
+    <textarea required asp-for="contexto" rows="6" cols="50" id="contexto" class="form-control" placeholder="Explique seu problema">@Model.contexto</textarea>
+
+</div>
+
+<div class="form-group item">
+    <label for="imagemInput">Imagem (opcional)</label>
+    <input asp-for="arquivoImg" type="file" accept="image/*" id="imagemInput" class="form-control item">
+    
+    <input type="hidden" name="imagem" value="@Model.imagem">
+    @if (Model.imagem != null)
+    {
+        <img id="preview" style="max-width:300px;" src="~/images/@Model.imagem"/>
+    }
+    else
+    {
+        <img id="preview" style="max-width:300px; display:none;" />
+    }
+
+    <script>
+            //Mostra imagem após ser selecionada
+            const imagemInput = document.getElementById('imagemInput');
+            const preview = document.getElementById('preview');
+
+            imagemInput.addEventListener('change', function () {
+
+                const file = this.files[0];
+
+                if (!file) {
+                    preview.style.display = 'none';
+                    return;
+                }
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            });
+    </script>
+</div>
+
+<button type="submit" class="btn btn-primary">Salvar</button>
