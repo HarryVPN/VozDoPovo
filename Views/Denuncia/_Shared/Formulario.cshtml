@@ -1,48 +1,207 @@
 ﻿@model DenunciaModel
 
 <style>
-    .item {
-        margin-bottom: 20px;
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+
+    .denuncia-form {
+        background: #1e293b;
+        border-radius: 1.5rem;
+    }
+
+        .denuncia-form h3 {
+            color: #f8fafc;
+        }
+
+    .form-label {
+        color: #cbd5e1;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+    }
+
+    .dark-input {
+        background-color: #0f172a;
+        border: 1px solid #334155;
+        color: #e2e8f0;
+        border-radius: 1rem;
+        padding: 0.85rem 1rem;
+    }
+
+        .dark-input:focus {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 .25rem rgba(59, 130, 246, 0.25);
+        }
+
+        .dark-input::placeholder {
+            color: #64748b;
+        }
+
+        .dark-input[type="file"] {
+            padding: 0.65rem 1rem;
+        }
+
+            .dark-input[type="file"]::file-selector-button {
+                background-color: #334155;
+                color: #e2e8f0;
+                border: none;
+                border-radius: .75rem;
+                padding: .5rem 1rem;
+                margin-right: 1rem;
+                transition: background-color .2s ease;
+            }
+
+                /* .dark-input[type="file"]::file-selector-button:hover {
+                    background-color: #475569;
+                } */
+
+    .preview-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .preview-image {
+        width: 100%;
+        max-width: 450px;
+        max-height: 350px;
+        object-fit: cover;
+        border-radius: 1rem;
+        border: 1px solid #334155;
+        background-color: #0f172a;
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25);
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+    }
+    .btn-danger {
+        background: linear-gradient(135deg, red, indianred);
+        border: none;
+    }
+
+    .form-text {
+        color: #94a3b8 !important;
     }
 </style>
 
-<div class="form-group item">
-    <label for="contexto">Denuncia</label>
-    <textarea required asp-for="contexto" rows="6" cols="50" id="contexto" class="form-control" placeholder="Explique seu problema">@Model.contexto</textarea>
+
+<div class="container py-4  card denuncia-form border-0 shadow-lg  card-body p-4 p-lg-5">
+     
+    <div class="mb-4">
+
+        <label asp-for="contexto" class="form-label">
+            Denúncia
+        </label>
+
+        <textarea asp-for="contexto"
+                  required
+                  rows="8"
+                  id="contexto"
+                  class="form-control dark-input"
+                  placeholder="Explique seu problema"></textarea>
+
+        <span asp-validation-for="contexto"
+              class="text-danger small"></span>
+
+    </div>
+
+    <div class="mb-4">
+
+        <label for="imagemInput" class="form-label">
+            Imagem (opcional)
+        </label>
+
+        <input asp-for="arquivoImg"
+               type="file"
+               accept="image/*"
+               id="imagemInput"
+               class="form-control dark-input" />
+
+        <div class="form-text text-secondary mt-2">
+            JPG, PNG ou WEBP
+        </div>
+
+        <input type="hidden"
+               name="imagem"
+               value="@Model.imagem">
+
+    </div>
+
+    <div class="preview-container mb-4">
+
+        @if (Model.imagem != null)
+        {
+            <img id="preview"
+                 src="~/images/@Model.imagem"
+                 class="preview-image"
+                 alt="Pré-visualização da imagem" />
+        }
+        else
+        {
+            <img id="preview"
+                 class="preview-image d-none"
+                 alt="Pré-visualização da imagem" />
+        }
+
+    </div>
+
+    <div class="d-flex justify-content-end gap-3">
+
+        <a asp-controller="Home"
+           asp-action="Index"
+           class="btn btn-outline-secondary rounded-pill px-4">
+
+            <i class="fa-solid fa-x me-1"></i>
+            Cancelar
+        </a>
+        
+        @if (ViewContext.RouteData.Values["action"]?.ToString() == "EditarDenuncia")
+        {
+
+            <a asp-controller="Denuncia"
+               asp-action="DeletarDenuncia"
+               asp-route-id="@Model.id"
+               class="btn btn-danger rounded-pill px-4">
+
+                <i class="fa-solid fa-trash me-1"></i>
+                Deletar
+            </a>
+        }
+        
+        <button type="submit"
+                class="btn btn-primary rounded-pill px-4">
+
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+            Salvar
+        </button>
+
+    </div>
 
 </div>
 
-<div class="form-group item">
-    <label for="imagemInput">Imagem (opcional)</label>
-    <input asp-for="arquivoImg" type="file" accept="image/*" id="imagemInput" class="form-control item">
-    
-    <input type="hidden" name="imagem" value="@Model.imagem">
-    @if (Model.imagem != null)
-    {
-        <img id="preview" style="max-width:300px;" src="~/images/@Model.imagem"/>
-    }
-    else
-    {
-        <img id="preview" style="max-width:300px; display:none;" />
-    }
+<script>
+    const imagemInput = document.getElementById('imagemInput');
+    const preview = document.getElementById('preview');
 
-    <script>
-            //Mostra imagem após ser selecionada
-            const imagemInput = document.getElementById('imagemInput');
-            const preview = document.getElementById('preview');
+    imagemInput.addEventListener('change', function () {
 
-            imagemInput.addEventListener('change', function () {
+        const file = this.files[0];
 
-                const file = this.files[0];
+        if (!file) {
+            preview.src = '';
+            preview.classList.add('d-none');
+            return;
+        }
 
-                if (!file) {
-                    preview.style.display = 'none';
-                    return;
-                }
-                preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
-            });
-    </script>
-</div>
-
-<button type="submit" class="btn btn-primary">Salvar</button>
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('d-none');
+    });
+</script>

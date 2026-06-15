@@ -1,6 +1,161 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Voz do Povo</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StockFlow.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* CONFIGURAÇÕES GERAIS */
+        :root {
+        --bg-dark: #0f172a;
+        --bg-sidebar: #1e293b;
+        --accent-orange: #ff8c00;
+        --accent-green: #22c55e;
+        --accent-red: #ef4444;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        }
+
+        body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        display: flex;
+        height: 100vh;
+        }
+
+        /* BARRA LATERAL (SIDEBAR) */
+        .sidebar {
+        width: 260px;
+        background-color: var(--bg-sidebar);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        border-right: 1px solid #334155;
+        }
+
+        .logo {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .logo span {
+        color: var(--accent-orange);
+        }
+
+        .nav-menu {
+        list-style: none;
+        padding: 0;
+        flex-grow: 1;
+        }
+
+        .nav-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: 0.3s;
+        color: var(--text-muted);
+        text-decoration: none;
+        }
+
+        .nav-item:hover, .nav-item.active {
+        background-color: #334155;
+        color: white;
+        }
+
+        .nav-item.active {
+        border-left: 4px solid var(--accent-green);
+        }
+
+        /* CONTEÚDO PRINCIPAL */
+
+        .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        margin-top:10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo">
+            @* <i class="fa-solid fa-box-open" style="color: var(--accent-orange);"></i>
+            STOCK<span>FLOW</span> *@
+            <img src="~/VozDoPovoIcone.png" width="50" height="50" />
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index" style="color:var(--accent-green)">Voz do Povo</a>
+        </div>
+
+
+        <nav class="nav-menu">
+            @{
+                var paginaAtual = ViewContext.RouteData.Values["action"]?.ToString();
+            }
+            <a class="nav-link nav-item @(paginaAtual == "Index" ? "active" : "")"
+               asp-controller="Home"
+               asp-action="Index">
+                <i class="fa-solid fa-house"></i>Página Inicial
+            </a>
+
+            <a class="nav-link nav-item @(paginaAtual == "CriarDenuncia" ? "active" : "")"
+               asp-controller="Denuncia"
+               asp-action="CriarDenuncia">
+                <i class="fa-solid fa-plus-circle"></i>Fazer Denúncia
+            </a>
+
+            <a class="nav-link nav-item @(paginaAtual == "..." ? "active" : "")"
+               asp-controller="Home"
+               asp-action="Index">
+                <i class="fa-solid fa-solid fa-user"></i>Cadastrar
+            </a>
+
+        </nav>
+        <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Configurações</a>
+
+        &copy; 2026 - Voz do Povo
+    </div>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="top-bar">
+                <h2>@ViewData["Title"]</h2>
+                <div style="color: var(--text-muted)">
+                    <i class="fa-solid fa-circle-user"></i> Letícia Farias Ribeiro
+                </div>
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+@* <head>
     <link rel="icon" type="image/x-icon" href="~/favicon.ico"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -53,4 +208,4 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-</html>
+</html> *@

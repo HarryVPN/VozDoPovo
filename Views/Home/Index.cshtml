@@ -1,19 +1,211 @@
 ﻿@using VozDoPovo.Data
 @using System.Text.Json
 @model List<DenunciaModel>
-@{
-    ViewData["Title"] = "Início";
-}
 
-<body class="text-center">
+<style>
+    /* Área principal com rolagem interna apenas se necessário */
+    .main-content {
+        flex-grow: 1;
+        padding: 20px 40px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 
-    <div role="alert" class="alert alert-success">
+    .containerScanner {
+        display: flex;
+        gap: 20px;
+        max-width: 1200px; /* Limita a largura para não espalhar demais */
+        margin-bottom: 4%;
+    }
+
+    .box {
+        background: #1e293b;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        flex: 1;
+    }
+
+    .box-preview {
+        width: 300px; /* Reduzi um pouco a largura da lateral */
+        flex-shrink: 0;
+    }
+
+
+    .scannerEntrada {
+        text-align: center;
+        border: 2px dashed var(--accent-green);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        background: rgba(255, 140, 0, 0.05);
+    }
+
+        .scannerEntrada i {
+            font-size: 35px;
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .scannerEntrada p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+
+    .scannerSaida {
+        text-align: center;
+        border: 2px dashed var(--accent-red);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        background: rgba(255, 140, 0, 0.05);
+    }
+
+        .scannerSaida i {
+            font-size: 35px;
+            color: var(--accent-red);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .scannerSaida p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+
+    .row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, select {
+        padding: 10px;
+        margin-top: 5px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: white;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .btn-confirm {
+        background: var(--accent-green);
+        color: #0f172a;
+        border: none;
+        padding: 15px;
+        width: 100%;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    /* Ajuste da imagem para telas menores */
+    .product-preview-img {
+        width: 100%;
+        height: 150px;
+        background: #0f172a;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+    }
+
+    .label-desc {
+        font-size: 11px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .info-valor {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+
+    .denuncia-card {
+        background: #1e293b;
+        border-radius: 1.5rem;
+        transition: all 0.25s ease;
+    }
+
+        .denuncia-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35) !important;
+        }
+
+    .denuncia-date {
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+
+    .denuncia-content {
+        color: #e2e8f0;
+        line-height: 1.8;
+        text-align: justify;
+        white-space: pre-line;
+    }
+
+    .image-wrapper {
+        height: 300px;
+        overflow: hidden;
+        border-radius: 1rem;
+        border: 1px solid #334155;
+        background-color: #0f172a;
+    }
+
+    .card .border-bottom {
+        border-color: #334155 !important;
+    }
+
+    .btn-outline-primary {
+        border-width: 2px;
+    }
+
+        .btn-outline-primary:hover {
+            transform: translateY(-1px);
+        }
+
+
+</style>
+
+<h3>
+    <i class="fa-solid fa-list me-2"></i>
+    Denúncias Recentes
+</h3>
+
+<div class="main-content">
+    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> *@
+    @* <div role="alert" class="alert alert-success">
         <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
         Bem vindo ao site!
-    </div>
-
+    </div> *@
 
     @if (TempData[MeusIDs.Sucesso] != null)
     {
@@ -27,87 +219,68 @@
         }
     }
 
-    <h1>Denuncias Recentes</h1>
+    <div class="container py-4">
 
-    <table class="table table-hover align-middle table-responsive p-3 container shadow">
-        <tbody>
-            @if (Model != null && Model.Any())
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var denuncia in Model.OrderByDescending(x => x.id))
             {
-                @foreach (var denuncia in Model.OrderBy(x => x.id))
-                {
-                    <div data-id="@denuncia.id" class="card shadow border-4 rounded-4 p-2" style="margin-bottom:10px">
+                <div data-id="@denuncia.id"
+                     class="card denuncia-card border-0 shadow-lg mb-4">
 
-                        <div class="d-flex justify-content-between border-bottom border-4 pb-2 mb-2">
-                            @* <span>João Pedro Cunha</span> *@
-                            <span>@denuncia.data</span>
+                    <div class="card-body p-4">
 
-                            <i class="glyphicon glyphicon-thumbs-up"></i>
-                            <a role="button" class="btn btn-primary" asp-controller="Denuncia" asp-action="EditarDenuncia" asp-route-id="@denuncia.id">Editar</a>
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="denuncia-date">
+                                    <i class="fa-solid fa-calendar-days me-2"></i>
+                                    @denuncia.data
+                                </div>
+                            </div>
+
+                            <a class="btn btn-outline-primary rounded-pill px-4"
+                               asp-controller="Denuncia"
+                               asp-action="EditarDenuncia"
+                               asp-route-id="@denuncia.id">
+
+                                <i class="fa-solid fa-pen-to-square me-2"></i>
+                                Editar
+                            </a>
+
                         </div>
-                        <div class="position-relative" style="min-height:300px;">
 
-                            <div class="pe-5" style="margin-right:220px; text-align:justify">
-                                @denuncia.contexto
+                        <div class="row g-3">
+
+                            <div class="@(denuncia.imagem != null ? "col-lg-8" : "col-12")">
+
+                                <div class="denuncia-content">
+                                    @denuncia.contexto
+                                </div>
+
                             </div>
 
                             @if (denuncia.imagem != null)
                             {
-                                <div class="position-absolute top-0 end-0 border border-2 p-0" style="width:220px;height:300px;">
-                                    <img src="~/images/@denuncia.imagem" class="img-fluid h-100 w-100 object-fit-cover">
+                                <div class="col-lg-4">
+
+                                    <div class="image-wrapper">
+                                        <img src="~/images/@denuncia.imagem"
+                                             class="img-fluid rounded-4 h-100 w-100 object-fit-cover"
+                                             alt="Imagem da denúncia">
+                                    </div>
+
                                 </div>
                             }
+
                         </div>
 
                     </div>
-                }
+
+                </div>
             }
-        </tbody>
-    </table>
-   
-</body>
+        }
 
-                            
-@* <div class="container shadow">
-    <div class="forms">
-        <div class="form login">
-            <img src="~/Auth/images/logo-bol.png" class="img-fluid title" alt="Imagem">
-            <form class="loadForm" asp-controller="Auth" asp-action="Entrar" method="post">
-                <div class="input-field">
-                    <input type="text" id="id" name="id" asp-for="id" placeholder="Digite seu Login ou CPF" required
-                           autocomplete="new-text" value="@Model?.id">
-                    <i class="uil uil-user"></i>
-                </div>
-                <div class="input-field">
-                    <input type="password" id="senha" name="senha" asp-for="senha" class="password"
-                           placeholder="Digite sua Senha" required autocomplete="new-password" value="@Model?.senha">
-                    <i class="uil uil-lock icon"></i>
-                    <i class="uil uil-eye-slash showHidePw"></i>
-                </div>
-                <div class="checkbox-text">
-                    <div class="checkbox-content">
-                        <input type="checkbox" class="cyberpunk-checkbox" id="lembrarCredenciais"
-                               name="lembrarCredenciais" value="true">
-                        <label for="lembrarCredenciais" class="text" style="margin-bottom: 3px;">Lembre de mim</label>
-                    </div>
-
-                    <a asp-controller="Auth" asp-action="Recuperar" class="text">Esqueceu sua senha?</a>
-                </div>
-                <div class="input-field button">
-                    <button class="btn btn-block" type="submit" id="submitButton"
-                            style="background-color: #2d5980; color: white; outline: none; box-shadow: none;">
-                        <span class="button-text">Conectar</span>
-                        <div class="spinner-border spinner-border-sm" role="status" style="display: none;">
-                            <span class="visually-hidden"></span>
-                        </div>
-                    </button>
-                </div>
-            </form>
-            <div class="login-signup">
-                <span class="text">
-                    Não tem cadastro?
-                    <a asp-controller="Auth" asp-action="New" class="text signup-link">Cadastrar-se</a>
-                </span>
-            </div>
-        </div>
     </div>
-</div> *@
+
+</div>
