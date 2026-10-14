@@ -86,7 +86,7 @@
     .row {
         display: flex;
         gap: 15px;
-        margin-bottom: 20px;
+        /* margin-bottom: 20px; */
     }
 
     .form-group {
@@ -209,7 +209,7 @@
 
     @if (TempData[MeusIDs.Sucesso] != null)
     {
-        JsonDenuncia? denuncia = JsonSerializer.Deserialize<JsonDenuncia>(TempData[MeusIDs.Sucesso].ToString());
+        JsonDenuncia? denuncia = JsonSerializer.Deserialize<JsonDenuncia?>(TempData[MeusIDs.Sucesso].ToString());
         if (denuncia != null)
         {
             <div role="alert" class="alert alert-success">
@@ -225,17 +225,32 @@
         {
             @foreach (var denuncia in Model.OrderByDescending(x => x.id))
             {
+                @* <partial name="_Postagem" model=denuncia /> *@
                 <div data-id="@denuncia.id"
                      class="card denuncia-card border-0 shadow-lg mb-4">
 
                     <div class="card-body p-4">
 
-                        <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
 
                             <div class="d-flex align-items-center gap-3">
                                 <div class="denuncia-date">
                                     <i class="fa-solid fa-calendar-days me-2"></i>
                                     @denuncia.data
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="denuncia-date">
+                                    <i class="fa-solid fa-location-dot me-2"></i>
+                                    Av. Jorge Teixeira
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="denuncia-date">
+                                    <i class="fa-solid fa-person me-2"></i>
+                                    Fulano Ciclano
                                 </div>
                             </div>
 
@@ -250,7 +265,7 @@
 
                         </div>
 
-                        <div class="row g-3">
+                        <div class="row">
 
                             <div class="@(denuncia.imagem != null ? "col-lg-8" : "col-12")">
 
@@ -262,7 +277,7 @@
 
                             @if (denuncia.imagem != null)
                             {
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 pb-2">
 
                                     <div class="image-wrapper">
                                         <img src="~/images/@denuncia.imagem"
@@ -272,6 +287,42 @@
 
                                 </div>
                             }
+
+                            @* Botões de baixo *@
+                            <div class="border-bottom"></div>
+
+                            <div class="d-flex" style="float:right">
+                                
+                                <div class="btn btn-primary rounded-pill">
+                                    <a class="btn btn-primary"
+                                       asp-controller="Denuncia"
+                                       asp-action="Like"
+                                       asp-route-id="@denuncia.id">
+
+                                        <i class="fa-solid fa-thumbs-up me-2"></i>
+                                        @denuncia.likes
+                                    </a>
+
+                                    <a class="btn btn-primary"
+                                       asp-controller="Denuncia"
+                                       asp-action="Dislike"
+                                       asp-route-id="@denuncia.id">
+
+                                        <i class="fa-solid fa-thumbs-down me-2"></i>
+                                        @denuncia.dislikes
+                                    </a>
+
+                                    <a class="btn btn-primary align-content-end px-4"
+                                       asp-controller="Denuncia"
+                                       asp-action="VerDenuncia"
+                                       asp-route-id="@denuncia.id">
+
+                                        <i class="fa-solid fa-comment me-2"></i>
+                                        0
+                                    </a>
+                                </div>
+
+                            </div>
 
                         </div>
 

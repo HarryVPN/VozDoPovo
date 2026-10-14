@@ -87,7 +87,7 @@ namespace VozDoPovo.Controllers
             {
                 if (model.imagem != null)
                     DeletarImagemPorNome(model.imagem);
-                
+
                 string nomeArquivo = Path.GetRandomFileName() + Path.GetExtension(model.arquivoImg.FileName);
 
                 using var stream = new FileStream(
@@ -129,5 +129,39 @@ namespace VozDoPovo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        private IActionResult LikeDislike(int id, bool like)
+        {
+            DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
+
+            if (denuncia != null)
+            {
+                if (like)
+                    denuncia.likes += 1;
+                else
+                    denuncia.dislikes += 1;
+
+                _bancoContext.Update(denuncia);
+                _bancoContext.SaveChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Like(int id)
+        {
+            return LikeDislike(id, true);
+        }
+        public IActionResult Dislike(int id)
+        {
+            return LikeDislike(id, false);
+        }
+
+        public IActionResult VerDenuncia(int id)
+        {
+            DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
+            if (denuncia != null)
+                return View(denuncia);
+            else
+                return RedirectToAction();
+        }
     }
 }
