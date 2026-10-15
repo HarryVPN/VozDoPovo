@@ -1,5 +1,4 @@
-﻿//using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,6 +17,15 @@ namespace VozDoPovo.Models
 
         [NotMapped]
         public virtual IFormFile? arquivoImg { get; set; }
+
+        [NotMapped]
+        public virtual List<ComentarioModel>? comentarios { get; set; }
+
+        [NotMapped]
+        public virtual string? mensagem { get; set; }
+
+        [NotMapped]
+        public virtual ComentarioModel? comentario { get; set; }
     }
     public class JsonDenuncia
     {

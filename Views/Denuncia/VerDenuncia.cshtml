@@ -1,114 +1,51 @@
 ﻿@model DenunciaModel
 
-<style>
-    .main-content {
-        flex-grow: 1;
-        padding: 20px 40px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    h2 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        font-size: 24px;
-    }
-
-    .box {
-        background: #1e293b;
-        padding: 20px;
-        border-radius: 12px;
-        border: 1px solid #334155;
-        flex: 1;
-    }
-
-    .row {
-        display: flex;
-        gap: 15px;
-        /* margin-bottom: 20px; */
-    }
-
-    .form-group {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    input, select {
-        padding: 10px;
-        margin-top: 5px;
-        background: #0f172a;
-        border: 1px solid #334155;
-        color: white;
-        border-radius: 6px;
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-
-    body {
-        background-color: #0f172a;
-        color: #e2e8f0;
-    }
-
-    .denuncia-card {
-        background: #1e293b;
-        border-radius: 1.5rem;
-        transition: all 0.25s ease;
-    }
-
-        .denuncia-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35) !important;
-        }
-
-    .denuncia-date {
-        color: #94a3b8;
-        font-size: 0.95rem;
-    }
-
-    .denuncia-content {
-        color: #e2e8f0;
-        line-height: 1.8;
-        text-align: justify;
-        white-space: pre-line;
-    }
-
-    .image-wrapper {
-        height: 300px;
-        overflow: hidden;
-        border-radius: 1rem;
-        border: 1px solid #334155;
-        background-color: #0f172a;
-    }
-
-    .card .border-bottom {
-        border-color: #334155 !important;
-    }
-
-    .btn-outline-primary {
-        border-width: 2px;
-    }
-
-        .btn-outline-primary:hover {
-            transform: translateY(-1px);
-        }
-</style>
+<link rel="stylesheet" href="~/css/Denuncia.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
 
 <h3 class="mb-4">
-    <i class="fa-solid fa-triangle-exclamation me-2" style="color:orange"></i>
-    Editar Denúncia #@Model.id
+    <i class="fa-solid fa-bookmark me-2" style="color:lightgreen"></i>
+    Denúncia #@Model.id
 </h3>
 
 <div class="main-content container ">
+    <partial name="_Postagem" />
 
-    <form asp-action="DenunciaEditada" method="post" enctype="multipart/form-data" class="text-lg-start">
+    <form asp-action="Comentar" method="post" enctype="multipart/form-data" class="text-lg-start mb-4">
 
-        <input type="hidden" asp-for="id" />
-        <input type="hidden" asp-for="data" />
+        <input type="hidden" asp-for="id"/>
 
-        <partial name="_Postagem" />
+       
+        <span asp-validation-for="mensagem"
+              class="text-danger small"></span>
+
+        <label asp-for="mensagem" class="form-label">
+            <i class="fa-solid fa-comment me-2"></i>Comentários
+        </label>
+
+        <textarea asp-for="mensagem"
+                  required
+                  rows="2"
+                  id="contexto"
+                  class="form-control dark-input"
+                  placeholder="Explique seu problema">
+              </textarea>
+
+
+        <button type="submit"
+                class="btn btn-primary rounded-pill px-4">
+
+            <i class="fa-solid fa-floppy-disk me-2"></i>
+            Adicionar
+        </button>
+
     </form>
-</div>
 
+    @if (Model.comentarios != null)
+    {
+        @foreach (ComentarioModel comentario in Model.comentarios)
+        {
+            <div>@comentario.mensagem</div>
+        }
+    }
+</div>

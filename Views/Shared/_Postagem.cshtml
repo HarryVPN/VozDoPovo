@@ -66,17 +66,13 @@
             <div class="border-bottom"></div>
 
             <div class="d-flex" style="float:right">
-
-                <div>"@($"{Context.Request.Path}{Context.Request.QueryString}")"</div>
-
+                @* <div>"@($"{Context.Request.Path}{Context.Request.QueryString}")"</div> *@
                 <div class="btn btn-primary rounded-pill">
                     <a class="btn btn-primary"
                        asp-controller="Denuncia"
                        asp-action="Like"
                        asp-route-id="@Model.id"
-                       asp-route-action="@Context.Request.QueryString"
-                       asp-route-controller="@Context.Request.Path"
-                       method="post">
+                       asp-route-a="@Context.Request.Path">
 
                         <i class="fa-solid fa-thumbs-up me-2"></i>
                         @Model.likes
@@ -85,7 +81,8 @@
                     <a class="btn btn-primary"
                        asp-controller="Denuncia"
                        asp-action="Dislike"
-                       asp-route-id="@Model.id">
+                       asp-route-id="@Model.id"
+                       asp-route-a="@Context.Request.Path">
 
                         <i class="fa-solid fa-thumbs-down me-2"></i>
                         @Model.dislikes

@@ -1,0 +1,87 @@
+
+/*Criar e Editar Denuncia*/
+.denuncia-form {
+    background: #1e293b;
+    border-radius: 1.5rem;
+}
+
+    .denuncia-form h3 {
+        color: #f8fafc;
+    }
+
+.form-label {
+    color: #cbd5e1;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.dark-input {
+    background-color: #0f172a;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    border-radius: 1rem;
+    padding: 0.85rem 1rem;
+}
+
+    .dark-input:focus {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 .25rem rgba(59, 130, 246, 0.25);
+    }
+
+    .dark-input::placeholder {
+        color: #64748b;
+    }
+
+    .dark-input[type="file"] {
+        padding: 0.65rem 1rem;
+    }
+
+        .dark-input[type="file"]::file-selector-button {
+            background-color: #334155;
+            color: #e2e8f0;
+            border: none;
+            border-radius: .75rem;
+            padding: .5rem 1rem;
+            margin-right: 1rem;
+            transition: background-color .2s ease;
+        }
+
+/* .dark-input[type="file"]::file-selector-button:hover {
+                    background-color: #475569;
+                } */
+
+.preview-container {
+    display: flex;
+    justify-content: center;
+}
+
+.preview-image {
+    width: 100%;
+    max-width: 450px;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 1rem;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .25);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, red, indianred);
+    border: none;
+}
+
+.form-text {
+    color: #94a3b8 !important;
+}

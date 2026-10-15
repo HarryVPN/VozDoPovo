@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System;
 using System.IO;
+using Microsoft.Extensions.Primitives;
 
 namespace VozDoPovo.Controllers
 {
@@ -129,7 +130,7 @@ namespace VozDoPovo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private IActionResult LikeDislike(int id, string action, string controller, bool like)
+        private IActionResult LikeDislike(int id, string url, bool like)
         {
             DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
 
@@ -140,34 +141,53 @@ namespace VozDoPovo.Controllers
                 else
                     denuncia.dislikes += 1;
 
-                _bancoContext.Update(denuncia);
+                _bancoContext.Denuncias.Update(denuncia);
                 _bancoContext.SaveChanges();
             }
-            //if (!string.IsNullOrEmpty(pagina) && Url.IsLocalUrl(pagina))
-            //   return LocalRedirect(pagina);
-            return RedirectToAction(action, controller, id);
+
+            return Redirect(url);
         }
 
-        [HttpPost]
-        public IActionResult Like(int id, string action, string controller)
+        public IActionResult Like(int id, string a)
         {
-            Console.WriteLine("pfv");
-            return LikeDislike(id, action, controller, true);
-        }
-        
-        [HttpPost]
-        public IActionResult Dislike(int id, string action, string controller)
-        {
-            return LikeDislike(id, action, controller, false);
+            return LikeDislike(id, a, true);
         }
 
-        public IActionResult VerDenuncia(int id)
+        public IActionResult Dislike(int id, string a)
+        {
+            return LikeDislike(id, a, false);
+        }
+
+        private DenunciaModel? AbrirPost(int id)
         {
             DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
+
             if (denuncia != null)
-                return View(denuncia);
-            else
-                return RedirectToAction();
+            {
+                denuncia.comentarios = _bancoContext.Comentarios.Where(x => x.idPost == id).ToList();
+                return denuncia;
+            }
+            return null;
+        }
+
+        public async Task<IActionResult> VerDenuncia(int id)
+        {
+            var denuncia = AbrirPost(id);
+            return View(denuncia);
+        }
+
+        [HttpPost]
+        public IActionResult Comentar(ComentarioModel comentario)
+        {
+            comentario.data = DateTime.Now;
+            comentario.idPost = comentario.id;
+            comentario.id = 0;
+
+            _bancoContext.Comentarios.Add(comentario);
+            _bancoContext.SaveChanges();
+
+            var denuncia = AbrirPost(comentario.idPost);
+            return RedirectToAction("VerDenuncia", "Denuncia", denuncia);
         }
     }
 }
