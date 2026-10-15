@@ -1,84 +1,36 @@
 ﻿@model DenunciaModel
 
-<style>
-    body {
-        background-color: #0f172a;
-        color: #e2e8f0;
-    }
-
-    .denuncia-card {
-        background: #1e293b;
-        border-radius: 1.5rem;
-        transition: all 0.25s ease;
-    }
-        .denuncia-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35) !important;
-        }
-
-    .denuncia-date {
-        color: #94a3b8;
-        font-size: 0.95rem;
-    }
-
-    .denuncia-content {
-        color: #e2e8f0;
-        line-height: 1.8;
-        text-align: justify;
-        white-space: pre-line;
-    }
-
-    .image-wrapper {
-        height: 300px;
-        overflow: hidden;
-        border-radius: 1rem;
-        border: 1px solid #334155;
-        background-color: #0f172a;
-    }
-
-    .card .border-bottom {
-        border-color: #334155 !important;
-    }
-
-    .btn-outline-primary {
-        border-width: 2px;
-    }
-        .btn-outline-primary:hover {
-            transform: translateY(-1px);
-        }
-</style>
-
 <div data-id="@Model.id"
-     class="card Model-card border-0 shadow-lg mb-4">
+     class="card denuncia-card border-0 shadow-lg mb-4">
 
     <div class="card-body p-4">
 
         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
 
             <div class="d-flex align-items-center gap-3">
-                <div class="Model-date">
+                <div class="denuncia-date">
                     <i class="fa-solid fa-calendar-days me-2"></i>
                     @Model.data
                 </div>
             </div>
 
             <div class="d-flex align-items-center gap-3">
-                <div class="Model-date">
+                <div class="denuncia-date">
                     <i class="fa-solid fa-location-dot me-2"></i>
                     Av. Jorge Teixeira
                 </div>
             </div>
 
             <div class="d-flex align-items-center gap-3">
-                <div class="Model-date">
+                <div class="denuncia-date">
                     <i class="fa-solid fa-person me-2"></i>
                     Fulano Ciclano
                 </div>
             </div>
 
             <a class="btn btn-outline-primary rounded-pill px-4"
-               asp-controller="Model"
-               asp-action="EditarModel"
+               asp-controller="Denuncia"
+               asp-action="EditarDenuncia"
                asp-route-id="@Model.id">
 
                 <i class="fa-solid fa-pen-to-square me-2"></i>
@@ -91,9 +43,10 @@
 
             <div class="@(Model.imagem != null ? "col-lg-8" : "col-12")">
 
-                <div class="Model-content">
+                <div class="denuncia-content">
                     @Model.contexto
                 </div>
+
             </div>
 
             @if (Model.imagem != null)
@@ -105,6 +58,7 @@
                              class="img-fluid rounded-4 h-100 w-100 object-fit-cover"
                              alt="Imagem da denúncia">
                     </div>
+
                 </div>
             }
 
@@ -113,18 +67,23 @@
 
             <div class="d-flex" style="float:right">
 
+                <div>"@($"{Context.Request.Path}{Context.Request.QueryString}")"</div>
+
                 <div class="btn btn-primary rounded-pill">
                     <a class="btn btn-primary"
-                       asp-controller="Model"
+                       asp-controller="Denuncia"
                        asp-action="Like"
-                       asp-route-id="@Model.id">
+                       asp-route-id="@Model.id"
+                       asp-route-action="@Context.Request.QueryString"
+                       asp-route-controller="@Context.Request.Path"
+                       method="post">
 
                         <i class="fa-solid fa-thumbs-up me-2"></i>
                         @Model.likes
                     </a>
 
                     <a class="btn btn-primary"
-                       asp-controller="Model"
+                       asp-controller="Denuncia"
                        asp-action="Dislike"
                        asp-route-id="@Model.id">
 
@@ -133,17 +92,15 @@
                     </a>
 
                     <a class="btn btn-primary align-content-end px-4"
-                       asp-controller="Model"
-                       asp-action="VerModel"
+                       asp-controller="Denuncia"
+                       asp-action="VerDenuncia"
                        asp-route-id="@Model.id">
 
                         <i class="fa-solid fa-comment me-2"></i>
                         0
                     </a>
                 </div>
-
             </div>
-
         </div>
     </div>
-</div>
+</div>           

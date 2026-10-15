@@ -1,14 +1,114 @@
 ﻿@model DenunciaModel
 
+<style>
+    .main-content {
+        flex-grow: 1;
+        padding: 20px 40px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .box {
+        background: #1e293b;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #334155;
+        flex: 1;
+    }
+
+    .row {
+        display: flex;
+        gap: 15px;
+        /* margin-bottom: 20px; */
+    }
+
+    .form-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, select {
+        padding: 10px;
+        margin-top: 5px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: white;
+        border-radius: 6px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+
+    .denuncia-card {
+        background: #1e293b;
+        border-radius: 1.5rem;
+        transition: all 0.25s ease;
+    }
+
+        .denuncia-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35) !important;
+        }
+
+    .denuncia-date {
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+
+    .denuncia-content {
+        color: #e2e8f0;
+        line-height: 1.8;
+        text-align: justify;
+        white-space: pre-line;
+    }
+
+    .image-wrapper {
+        height: 300px;
+        overflow: hidden;
+        border-radius: 1rem;
+        border: 1px solid #334155;
+        background-color: #0f172a;
+    }
+
+    .card .border-bottom {
+        border-color: #334155 !important;
+    }
+
+    .btn-outline-primary {
+        border-width: 2px;
+    }
+
+        .btn-outline-primary:hover {
+            transform: translateY(-1px);
+        }
+</style>
+
 <h3 class="mb-4">
     <i class="fa-solid fa-triangle-exclamation me-2" style="color:orange"></i>
     Editar Denúncia #@Model.id
 </h3>
 
-<form asp-action="DenunciaEditada" method="post" enctype="multipart/form-data" class="text-lg-start">
+<div class="main-content container ">
 
-    <input type="hidden" asp-for="id" />
-    <input type="hidden" asp-for="data" />
+    <form asp-action="DenunciaEditada" method="post" enctype="multipart/form-data" class="text-lg-start">
 
-    <partial name="_Postagem"/>
-</form>
+        <input type="hidden" asp-for="id" />
+        <input type="hidden" asp-for="data" />
+
+        <partial name="_Postagem" />
+    </form>
+</div>
+

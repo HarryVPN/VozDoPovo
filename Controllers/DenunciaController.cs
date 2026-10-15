@@ -129,7 +129,7 @@ namespace VozDoPovo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private IActionResult LikeDislike(int id, bool like)
+        private IActionResult LikeDislike(int id, string action, string controller, bool like)
         {
             DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
 
@@ -143,16 +143,22 @@ namespace VozDoPovo.Controllers
                 _bancoContext.Update(denuncia);
                 _bancoContext.SaveChanges();
             }
-            return RedirectToAction("Index", "Home");
+            //if (!string.IsNullOrEmpty(pagina) && Url.IsLocalUrl(pagina))
+            //   return LocalRedirect(pagina);
+            return RedirectToAction(action, controller, id);
         }
 
-        public IActionResult Like(int id)
+        [HttpPost]
+        public IActionResult Like(int id, string action, string controller)
         {
-            return LikeDislike(id, true);
+            Console.WriteLine("pfv");
+            return LikeDislike(id, action, controller, true);
         }
-        public IActionResult Dislike(int id)
+        
+        [HttpPost]
+        public IActionResult Dislike(int id, string action, string controller)
         {
-            return LikeDislike(id, false);
+            return LikeDislike(id, action, controller, false);
         }
 
         public IActionResult VerDenuncia(int id)
