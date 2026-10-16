@@ -12,8 +12,8 @@ namespace VozDoPovo.Models
         public byte dislikes { get; set; } = 0;
         public string? imagem { get; set; }
         public required string contexto { get; set; } = string.Empty;
-
         public DateTime data { get; set; }
+        public bool anonimo { get; set; }
 
         [NotMapped]
         public virtual IFormFile? arquivoImg { get; set; }
@@ -22,10 +22,10 @@ namespace VozDoPovo.Models
         public virtual List<ComentarioModel>? comentarios { get; set; }
 
         [NotMapped]
-        public virtual string? mensagem { get; set; }
+        public virtual int comments { get; set; } = 0;
 
-        [NotMapped]
-        public virtual ComentarioModel? comentario { get; set; }
+        [NotMapped]//não é utilizado nesta classe, existe somente para ser usado no form do ComentarioModel
+        public virtual string? mensagem { get; set; }
     }
     public class JsonDenuncia
     {
@@ -39,4 +39,5 @@ namespace VozDoPovo.Models
 //    imagem nvarchar(20),
 //    contexto text not null,
 //    data datetime not null,
+//    anonimo bit
 //)

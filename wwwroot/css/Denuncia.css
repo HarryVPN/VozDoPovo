@@ -55,7 +55,6 @@ body {
     border-radius: 1.5rem;
     transition: all 0.25s ease;
 }
-
     .denuncia-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35) !important;
@@ -81,14 +80,13 @@ body {
     background-color: #0f172a;
 }
 
-.card .border-bottom {
+.border-bottom {
     border-color: #334155 !important;
 }
 
 .btn-outline-primary {
     border-width: 2px;
 }
-
     .btn-outline-primary:hover {
         transform: translateY(-1px);
     }

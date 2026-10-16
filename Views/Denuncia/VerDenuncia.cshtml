@@ -1,7 +1,9 @@
 ﻿@model DenunciaModel
 
-<link rel="stylesheet" href="~/css/Denuncia.css" asp-append-version="true" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
+
 <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Denuncia.css" asp-append-version="true" />
 
 <h3 class="mb-4">
     <i class="fa-solid fa-bookmark me-2" style="color:lightgreen"></i>
@@ -13,8 +15,7 @@
 
     <form asp-action="Comentar" method="post" enctype="multipart/form-data" class="text-lg-start mb-4">
 
-        <input type="hidden" asp-for="id"/>
-
+        <input type="hidden" asp-for="id" />
        
         <span asp-validation-for="mensagem"
               class="text-danger small"></span>
@@ -23,29 +24,40 @@
             <i class="fa-solid fa-comment me-2"></i>Comentários
         </label>
 
-        <textarea asp-for="mensagem"
-                  required
-                  rows="2"
-                  id="contexto"
-                  class="form-control dark-input"
-                  placeholder="Explique seu problema">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+            <textarea asp-for="mensagem"
+                      required
+                      id="txtInput"
+                      rows="2"
+                      contenteditable
+                      class="form-control dark-input"
+                      style="margin-right:1%"
+                      placeholder="Escreva um comentário">
               </textarea>
 
+            <button type="submit" class="btn btn-primary rounded-pill">
+                <i class="fa-solid fa-upload"></i>
+            </button>
 
-        <button type="submit"
-                class="btn btn-primary rounded-pill px-4">
-
-            <i class="fa-solid fa-floppy-disk me-2"></i>
-            Adicionar
-        </button>
-
+        </div>
     </form>
 
     @if (Model.comentarios != null)
     {
         @foreach (ComentarioModel comentario in Model.comentarios)
         {
-            <div>@comentario.mensagem</div>
+            <div data-id="@Model.id" class="card denuncia-card shadow-lg mb-4 card-body">
+               @comentario.mensagem
+            </div>
         }
     }
+    else
+    {
+        <div class="align-content-center">Não há comentários</div>
+    }
+
 </div>
+
+<script>
+    $("#txtInput").autogrow();
+</script>

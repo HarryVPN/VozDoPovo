@@ -165,6 +165,7 @@ namespace VozDoPovo.Controllers
             if (denuncia != null)
             {
                 denuncia.comentarios = _bancoContext.Comentarios.Where(x => x.idPost == id).ToList();
+                denuncia.comments = denuncia.comentarios.Count();
                 return denuncia;
             }
             return null;
@@ -179,14 +180,19 @@ namespace VozDoPovo.Controllers
         [HttpPost]
         public IActionResult Comentar(ComentarioModel comentario)
         {
-            comentario.data = DateTime.Now;
-            comentario.idPost = comentario.id;
-            comentario.id = 0;
+            int idPost = comentario.id;
+            var denuncia = AbrirPost(idPost);
 
-            _bancoContext.Comentarios.Add(comentario);
-            _bancoContext.SaveChanges();
+            if (comentario.mensagem.Length > 0)
+            {
+                comentario.data = DateTime.Now;
+                comentario.idPost = comentario.id;
+                comentario.id = 0;
 
-            var denuncia = AbrirPost(comentario.idPost);
+                _bancoContext.Comentarios.Add(comentario);
+                _bancoContext.SaveChanges();
+            }
+
             return RedirectToAction("VerDenuncia", "Denuncia", denuncia);
         }
     }

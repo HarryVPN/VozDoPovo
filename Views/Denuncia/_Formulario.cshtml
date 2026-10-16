@@ -2,9 +2,9 @@
 
 <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
 
-<div class="container py-4  card denuncia-form border-0 shadow-lg  card-body p-4 p-lg-5">
+<div class="container py-4 card denuncia-form border-0 shadow-lg  card-body p-4 p-lg-5">
      
-    <div class="mb-4">
+    <div class="mb-3">
 
         <label asp-for="contexto" class="form-label">
             Denúncia
@@ -14,15 +14,23 @@
                   required
                   rows="8"
                   id="contexto"
-                  class="form-control dark-input"
-                  placeholder="Explique seu problema"></textarea>
+                  class="form-control dark-input mb-4"
+                  placeholder="Explique seu problema">
+              </textarea>
 
-        <span asp-validation-for="contexto"
-              class="text-danger small"></span>
+        <span asp-validation-for="contexto" class="text-danger small"></span>
+
+        <div class="d-flex align-items-center border-bottom border-top pb-1 pt-1" style="float:left">
+            
+            <input asp-for="anonimo" type="checkbox" name="anonimo" style="transform: scale(1.5); position: relative; top: -2px"/>
+
+            <label asp-for="anonimo" class="px-2">Anônimo</label>
+        </div>
 
     </div>
 
-    <div class="mb-4">
+
+    <div class="mb-3">
 
         <label for="imagemInput" class="form-label">
             Imagem (opcional)
@@ -62,6 +70,12 @@
 
     </div>
 
+    <!-- Display Google Map -->
+<div id="map" style="height: 400px; width: 100%;"></div>
+
+<!-- Button to submit selected location -->
+<button id="submitLocation">Submit Location</button>
+
     <div class="d-flex justify-content-end gap-3">
 
         <a asp-controller="Home"
@@ -96,6 +110,10 @@
 
 </div>
 
+
+<!-- Load Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
 <script>
     const imagemInput = document.getElementById('imagemInput');
     const preview = document.getElementById('preview');
@@ -113,4 +131,44 @@
         preview.src = URL.createObjectURL(file);
         preview.classList.remove('d-none');
     });
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
+
+        var marker;
+
+        // Add click event listener to get selected location
+        map.addListener('click', function (e) {
+            var latitude = e.latLng.lat();
+            var longitude = e.latLng.lng();
+            
+            // Clear previous marker
+            if (marker) {
+                marker.setMap(null);
+            }
+
+            // Display marker on selected location
+            marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map
+            });
+        });
+
+        // Event listener for submit button
+        document.getElementById('submitLocation').addEventListener('click', function () {
+            // Check if marker is defined
+            if (marker) {
+                // Get selected location data and submit to server
+                var latitude = marker.getPosition().lat();
+                var longitude = marker.getPosition().lng();
+                var locationName = ""; // You may prompt the user for a name
+                // Send latitude, longitude, and locationName to the server using AJAX
+            } else {
+                alert("Please select a location on the map.");
+            }
+        });
+    }
 </script>

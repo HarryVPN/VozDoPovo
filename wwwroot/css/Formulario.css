@@ -4,7 +4,6 @@
     background: #1e293b;
     border-radius: 1.5rem;
 }
-
     .denuncia-form h3 {
         color: #f8fafc;
     }
@@ -12,7 +11,7 @@
 .form-label {
     color: #cbd5e1;
     font-weight: 500;
-    margin-bottom: 0.75rem;
+/*    margin-bottom: 0.75rem;*/
 }
 
 .dark-input {
@@ -20,7 +19,7 @@
     border: 1px solid #334155;
     color: #e2e8f0;
     border-radius: 1rem;
-    padding: 0.85rem 1rem;
+/*    padding: 0.85rem 1rem;*/
 }
 
     .dark-input:focus {
