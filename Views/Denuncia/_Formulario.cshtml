@@ -1,4 +1,23 @@
-﻿@model DenunciaModel
+﻿@Html.AntiForgeryToken()
+@model DenunciaModel
+@{
+    ViewData["Title"] = "Mapa Interativo";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .map-coordinates {
+        margin-top: 12px;
+    }
+</style>
 
 <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
 
@@ -70,11 +89,55 @@
 
     </div>
 
-    <!-- Display Google Map -->
-<div id="map" style="height: 400px; width: 100%;"></div>
+    <div class="container mt-4">
+        <h2>Selecionar localização</h2>
 
-<!-- Button to submit selected location -->
-<button id="submitLocation">Submit Location</button>
+        @if (TempData["Mensagem"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Mensagem"]
+            </div>
+        }
+
+        <p>
+            Clique no mapa para selecionar uma localização.
+            Você também pode arrastar o marcador.
+        </p>
+            <div id="map"></div>
+
+            <div class="row map-coordinates">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="latitude" class="form-label">
+                        Latitude
+                    </label>
+
+                    <input asp-for="latitude"
+                           id="Latitude"
+                           class="form-control"
+                           readonly
+                           step="any"/>
+
+                    <span asp-validation-for="latitude"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="longitude" class="form-label">
+                        Longitude
+                    </label>
+
+                    <input asp-for="longitude"
+                           id="Longitude"
+                           class="form-control"
+                           readonly
+                           step="any" />
+
+                    <span asp-validation-for="longitude"
+                          class="text-danger"></span>
+                </div>
+            </div>
+
+    </div>
 
     <div class="d-flex justify-content-end gap-3">
 
@@ -111,64 +174,71 @@
 </div>
 
 
-<!-- Load Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    const imagemInput = document.getElementById('imagemInput');
-    const preview = document.getElementById('preview');
+    const initialLatitude = Number(document.getElementById("Latitude").textContent)
+    const initialLongitude = Number(document.getElementById("Longitude").textContent)
 
-    imagemInput.addEventListener('change', function () {
+    // Create the map.
+    const map = L.map('map').setView(
+        [initialLatitude, initialLongitude],
+        13
+    );
 
-        const file = this.files[0];
-
-        if (!file) {
-            preview.src = '';
-            preview.classList.add('d-none');
-            return;
+    // Load OpenStreetMap tiles.
+    L.tileLayer(
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+                'OpenStreetMap</a> contributors'
         }
+    ).addTo(map);
 
-        preview.src = URL.createObjectURL(file);
-        preview.classList.remove('d-none');
+    const latitudeInput = document.getElementById('Latitude');
+    const longitudeInput = document.getElementById('Longitude');
+
+    // Create a draggable marker.
+    const marker = L.marker(
+        [initialLatitude, initialLongitude],
+        { draggable: true }
+    ).addTo(map);
+
+    marker.bindPopup('Localização selecionada').openPopup();
+
+    // Update the form fields.
+    function updateCoordinates(latitude, longitude) {
+        latitudeInput.value = latitude.toFixed(6);
+        longitudeInput.value = longitude.toFixed(6);
+    }
+
+    // Initialize the fields.
+    updateCoordinates(initialLatitude, initialLongitude);
+
+    // Clicking the map moves the marker.
+    map.on('click', function(event) {
+        marker.setLatLng(event.latlng);
+
+        updateCoordinates(
+            event.latlng.lat,
+            event.latlng.lng
+        );
+
+        marker.openPopup();
     });
 
-    function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8
-        });
+    // Dragging the marker updates the coordinates.
+    marker.on('dragend', function(event) {
+        const position = event.target.getLatLng();
 
-        var marker;
-
-        // Add click event listener to get selected location
-        map.addListener('click', function (e) {
-            var latitude = e.latLng.lat();
-            var longitude = e.latLng.lng();
-            
-            // Clear previous marker
-            if (marker) {
-                marker.setMap(null);
-            }
-
-            // Display marker on selected location
-            marker = new google.maps.Marker({
-                position: { lat: latitude, lng: longitude },
-                map: map
-            });
-        });
-
-        // Event listener for submit button
-        document.getElementById('submitLocation').addEventListener('click', function () {
-            // Check if marker is defined
-            if (marker) {
-                // Get selected location data and submit to server
-                var latitude = marker.getPosition().lat();
-                var longitude = marker.getPosition().lng();
-                var locationName = ""; // You may prompt the user for a name
-                // Send latitude, longitude, and locationName to the server using AJAX
-            } else {
-                alert("Please select a location on the map.");
-            }
-        });
-    }
+        updateCoordinates(
+            position.lat,
+            position.lng
+        );
+    });
 </script>

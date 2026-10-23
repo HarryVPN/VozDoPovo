@@ -1,18 +1,6 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Win32;
-//using Newtonsoft.Json; // Install via NuGet: Newtonsoft.Json
-using System;
-using System.IO;
-using System.Net.Http;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Xml;
-using VozDoPovo.Models;
 
 namespace VozDoPovo.Controllers
 {
@@ -21,7 +9,6 @@ namespace VozDoPovo.Controllers
     {
         private const string ApiToken = "511bbb1efabebb18e7d019980a9b00c3ce85fac0";
         private const string ApiUrl = "https://api.platerecognizer.com/v1/plate-reader/";
-
 
         //[IgnoreAntiforgeryToken]
         [HttpPost]
@@ -68,10 +55,10 @@ namespace VozDoPovo.Controllers
                     return Ok(new
                     {
                         placa = result["plate"]?.GetValue<string>(),
-                        x0 = result["box"]?["xmin"]?.GetValue<int>(),
-                        y0 = result["box"]?["ymin"]?.GetValue<int>(),
-                        x1 = result["box"]?["xmax"]?.GetValue<int>(),
-                        y1 = result["box"]?["ymax"]?.GetValue<int>()
+                        x1 = result["box"]?["xmin"]?.GetValue<int>(),
+                        y1 = result["box"]?["ymin"]?.GetValue<int>(),
+                        x2 = result["box"]?["xmax"]?.GetValue<int>(),
+                        y2 = result["box"]?["ymax"]?.GetValue<int>()
                     });
                 /*
                 {

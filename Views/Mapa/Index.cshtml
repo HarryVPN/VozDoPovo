@@ -1,0 +1,152 @@
+﻿@model MeuProjeto.Models.LocalizacaoModel
+
+@{
+    ViewData["Title"] = "Mapa Interativo";
+}
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .map-coordinates {
+        margin-top: 12px;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2>Selecionar localização</h2>
+
+    @if (TempData["Mensagem"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Mensagem"]
+        </div>
+    }
+
+    <p>
+        Clique no mapa para selecionar uma localização.
+        Você também pode arrastar o marcador.
+    </p>
+
+    <form asp-controller="Mapa"
+          asp-action="Index"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div id="map"></div>
+
+        <div class="row map-coordinates">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Latitude"
+                       class="form-label">
+                    Latitude
+                </label>
+
+                <input asp-for="Latitude"
+                       id="Latitude"
+                       class="form-control"
+                       readonly
+                       step="any" />
+
+                <span asp-validation-for="Latitude"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Longitude"
+                       class="form-label">
+                    Longitude
+                </label>
+
+                <input asp-for="Longitude"
+                       id="Longitude"
+                       class="form-control"
+                       readonly
+                       step="any" />
+
+                <span asp-validation-for="Longitude"
+                      class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Salvar localização
+        </button>
+    </form>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    // Initial position: Porto Velho, Rondônia.
+    const initialLatitude = -8.7608;
+    const initialLongitude = -63.8999;
+
+    // Create the map.
+    const map = L.map('map').setView(
+        [initialLatitude, initialLongitude],
+        13
+    );
+
+    // Load OpenStreetMap tiles.
+    L.tileLayer(
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+                'OpenStreetMap</a> contributors'
+        }
+    ).addTo(map);
+
+    const latitudeInput = document.getElementById('Latitude');
+    const longitudeInput = document.getElementById('Longitude');
+
+    // Create a draggable marker.
+    const marker = L.marker(
+        [initialLatitude, initialLongitude],
+        { draggable: true }
+    ).addTo(map);
+
+    marker.bindPopup('Localização selecionada').openPopup();
+
+    // Update the form fields.
+    function updateCoordinates(latitude, longitude) {
+        latitudeInput.value = latitude.toFixed(6);
+        longitudeInput.value = longitude.toFixed(6);
+    }
+
+    // Initialize the fields.
+    updateCoordinates(initialLatitude, initialLongitude);
+
+    // Clicking the map moves the marker.
+    map.on('click', function(event) {
+        marker.setLatLng(event.latlng);
+
+        updateCoordinates(
+            event.latlng.lat,
+            event.latlng.lng
+        );
+
+        marker.openPopup();
+    });
+
+    // Dragging the marker updates the coordinates.
+    marker.on('dragend', function(event) {
+        const position = event.target.getLatLng();
+
+        updateCoordinates(
+            position.lat,
+            position.lng
+        );
+    });
+</script>

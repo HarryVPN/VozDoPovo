@@ -9,20 +9,24 @@
     Denúncias Recentes
 </h3>
 
+@* Leitura de placas *@
+@* <div id="print"></div>
 
-<div id="print"></div>
+<div class="card-body position-relative p-0 d-flex align-items-center justify-content-center">
+    <!-- Área da câmera -->
+    <div class="camera-frame">
+        <video id="cameraVideo" autoplay playsinline></video>
 
-<div class="camera-frame">
-    <video id="cameraVideo" autoplay playsinline></video>
+        <canvas id="overlayCanvas"></canvas>
 
-    <canvas id="overlayCanvas"></canvas>
-
-    <canvas id="cameraCanvas" style="display:none;"></canvas>
+        <canvas id="cameraCanvas" style="display:none;"></canvas>
+    </div>
 </div>
 
 <button id="enviar" class="btn btn-sm">Enviar</button>
-@* <img src="~/bennesby-animado.gif" width="332" height="264" /> *@
+<script src="~/js/CameraPlaca.js" asp-append-version="true"></script> *@
 
+@* <img src="~/bennesby-animado.gif" width="332" height="264" /> *@
 
 <div class="main-content">
     @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> *@
@@ -55,5 +59,3 @@
     </div>
 
 </div>
-
-<script src="~/js/CameraPlaca.js" asp-append-version="true"></script>

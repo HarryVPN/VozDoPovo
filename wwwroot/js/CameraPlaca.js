@@ -23,6 +23,7 @@ async function Camera() {
 Camera()
 
 const url = "https://localhost:7191/"
+const overlayCtx = overlayCanvas.getContext("2d");
 
 async function Enviar() {
 
@@ -48,9 +49,34 @@ async function Enviar() {
                 method: 'POST',
                 body: formData
             });
-            const data = await response.json();
 
-            tPrint.textContent = data.placa+data.x0+data.x1+data.y0+data.y1
+            const data = await response.json();
+            //placa,x1,x2,y1,y2
+            if (!data) {
+                return;
+            }
+            data.placa = data.placa.toUpperCase();
+
+            tPrint.textContent = data.placa + data.x1 + data.x2 + data.y1 + data.y2
+
+            //desenhar quadrado
+            overlayCanvas.width = video.videoWidth;
+            overlayCanvas.height = video.videoHeight;
+
+            overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+            const x = data.x1;
+            const y = data.y1;
+            const w = data.x2 - data.x1;
+            const h = data.y2 - data.y1;
+
+            overlayCtx.lineWidth = 3;
+            overlayCtx.strokeStyle = "lime";
+            overlayCtx.strokeRect(x, y, w, h);
+
+            overlayCtx.fillStyle = "lime";
+            overlayCtx.font = "20px Arial";
+            overlayCtx.fillText(data.placa || "Detectando...", x, y - 10);
 
             // const data = await response.json();
             // if (!response.ok || data.sucesso === false)
@@ -111,6 +137,5 @@ async function Enviar() {
 
 
 };
-
 
 document.getElementById("enviar").addEventListener("click", Enviar)

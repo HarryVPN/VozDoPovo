@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -14,6 +15,14 @@ namespace VozDoPovo.Models
         public required string contexto { get; set; } = string.Empty;
         public DateTime data { get; set; }
         public bool anonimo { get; set; }
+
+        [Required]
+        [Range(-90, 90)]
+        public decimal latitude { get; set; } = (decimal)-8.7608;
+
+        [Required]
+        [Range(-180, 180)]
+        public decimal longitude { get; set; } = (decimal)-63.8999;
 
         [NotMapped]
         public virtual IFormFile? arquivoImg { get; set; }
@@ -39,5 +48,7 @@ namespace VozDoPovo.Models
 //    imagem nvarchar(20),
 //    contexto text not null,
 //    data datetime not null,
-//    anonimo bit
+//    anonimo bit,
+//    latitude smallmoney not null,
+//    longitude smallmoney not null
 //)
