@@ -4,7 +4,7 @@
     ViewData["Title"] = "Mapa Interativo";
 }
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
     #map {
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
 
 <div class="container py-4 card denuncia-form border-0 shadow-lg  card-body p-4 p-lg-5">
-     
+
     <div class="mb-3">
 
         <label asp-for="contexto" class="form-label">
@@ -40,8 +40,8 @@
         <span asp-validation-for="contexto" class="text-danger small"></span>
 
         <div class="d-flex align-items-center border-bottom border-top pb-1 pt-1" style="float:left">
-            
-            <input asp-for="anonimo" type="checkbox" name="anonimo" style="transform: scale(1.5); position: relative; top: -2px"/>
+
+            <input asp-for="anonimo" type="checkbox" name="anonimo" style="transform: scale(1.5); position: relative; top: -2px" />
 
             <label asp-for="anonimo" class="px-2">Anônimo</label>
         </div>
@@ -90,6 +90,7 @@
     </div>
 
     <div class="container mt-4">
+        @* MAPA *@
         <h2>Selecionar localização</h2>
 
         @if (TempData["Mensagem"] != null)
@@ -103,41 +104,43 @@
             Clique no mapa para selecionar uma localização.
             Você também pode arrastar o marcador.
         </p>
-            <div id="map"></div>
+        
+        <partial name="_Mapa"/>
+        
+        <div class="row map-coordinates">
+            <div class="col-md-6 mb-3">
+                <label asp-for="latitude" class="form-label">
+                    Latitude
+                </label>
 
-            <div class="row map-coordinates">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="latitude" class="form-label">
-                        Latitude
-                    </label>
+                <input asp-for="latitude"
+                       id="Latitude"
+                       class="form-control"
+                       readonly
+                       step="any" />
 
-                    <input asp-for="latitude"
-                           id="Latitude"
-                           class="form-control"
-                           readonly
-                           step="any"/>
-
-                    <span asp-validation-for="latitude"
-                          class="text-danger"></span>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="longitude" class="form-label">
-                        Longitude
-                    </label>
-
-                    <input asp-for="longitude"
-                           id="Longitude"
-                           class="form-control"
-                           readonly
-                           step="any" />
-
-                    <span asp-validation-for="longitude"
-                          class="text-danger"></span>
-                </div>
+                <span asp-validation-for="latitude"
+                      class="text-danger"></span>
             </div>
 
+            <div class="col-md-6 mb-3">
+                <label asp-for="longitude" class="form-label">
+                    Longitude
+                </label>
+
+                <input asp-for="longitude"
+                       id="Longitude"
+                       class="form-control"
+                       readonly
+                       step="any" />
+
+                <span asp-validation-for="longitude"
+                      class="text-danger"></span>
+            </div>
+        </div>
+        
     </div>
+
 
     <div class="d-flex justify-content-end gap-3">
 
@@ -148,7 +151,7 @@
             <i class="fa-solid fa-x me-1"></i>
             Cancelar
         </a>
-        
+
         @if (ViewContext.RouteData.Values["action"]?.ToString() == "EditarDenuncia")
         {
 
@@ -161,7 +164,7 @@
                 Deletar
             </a>
         }
-        
+
         <button type="submit"
                 class="btn btn-primary rounded-pill px-4">
 
@@ -172,73 +175,3 @@
     </div>
 
 </div>
-
-
-
-
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-    const initialLatitude = Number(document.getElementById("Latitude").textContent)
-    const initialLongitude = Number(document.getElementById("Longitude").textContent)
-
-    // Create the map.
-    const map = L.map('map').setView(
-        [initialLatitude, initialLongitude],
-        13
-    );
-
-    // Load OpenStreetMap tiles.
-    L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            maxZoom: 19,
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">' +
-                'OpenStreetMap</a> contributors'
-        }
-    ).addTo(map);
-
-    const latitudeInput = document.getElementById('Latitude');
-    const longitudeInput = document.getElementById('Longitude');
-
-    // Create a draggable marker.
-    const marker = L.marker(
-        [initialLatitude, initialLongitude],
-        { draggable: true }
-    ).addTo(map);
-
-    marker.bindPopup('Localização selecionada').openPopup();
-
-    // Update the form fields.
-    function updateCoordinates(latitude, longitude) {
-        latitudeInput.value = latitude.toFixed(6);
-        longitudeInput.value = longitude.toFixed(6);
-    }
-
-    // Initialize the fields.
-    updateCoordinates(initialLatitude, initialLongitude);
-
-    // Clicking the map moves the marker.
-    map.on('click', function(event) {
-        marker.setLatLng(event.latlng);
-
-        updateCoordinates(
-            event.latlng.lat,
-            event.latlng.lng
-        );
-
-        marker.openPopup();
-    });
-
-    // Dragging the marker updates the coordinates.
-    marker.on('dragend', function(event) {
-        const position = event.target.getLatLng();
-
-        updateCoordinates(
-            position.lat,
-            position.lng
-        );
-    });
-</script>
