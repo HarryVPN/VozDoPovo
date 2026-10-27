@@ -1,23 +1,8 @@
-﻿@Html.AntiForgeryToken()
+﻿@* @Html.AntiForgeryToken() *@
 @model DenunciaModel
 @{
     ViewData["Title"] = "Mapa Interativo";
 }
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-<style>
-    #map {
-        height: 500px;
-        width: 100%;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-    }
-
-    .map-coordinates {
-        margin-top: 12px;
-    }
-</style>
 
 <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
 
@@ -104,9 +89,9 @@
             Clique no mapa para selecionar uma localização.
             Você também pode arrastar o marcador.
         </p>
-        
-        <partial name="_Mapa"/>
-        
+
+        <partial name="_Mapa" />
+
         <div class="row map-coordinates">
             <div class="col-md-6 mb-3">
                 <label asp-for="latitude" class="form-label">
@@ -138,7 +123,7 @@
                       class="text-danger"></span>
             </div>
         </div>
-        
+
     </div>
 
 

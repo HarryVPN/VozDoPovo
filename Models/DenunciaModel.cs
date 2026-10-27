@@ -16,13 +16,9 @@ namespace VozDoPovo.Models
         public DateTime data { get; set; }
         public bool anonimo { get; set; }
 
-        [Required]
-        [Range(-90, 90)]
-        public decimal latitude { get; set; } = (decimal)-8.7608;
+        public double latitude { get; set; } = -8.769666;
 
-        [Required]
-        [Range(-180, 180)]
-        public decimal longitude { get; set; } = (decimal)-63.8999;
+        public double longitude { get; set; } = -63.884296;
 
         [NotMapped]
         public virtual IFormFile? arquivoImg { get; set; }
@@ -49,6 +45,6 @@ namespace VozDoPovo.Models
 //    contexto text not null,
 //    data datetime not null,
 //    anonimo bit,
-//    latitude smallmoney not null,
-//    longitude smallmoney not null
+//    latitude float not null,
+//    longitude float not null
 //)

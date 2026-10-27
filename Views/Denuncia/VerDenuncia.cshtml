@@ -1,9 +1,7 @@
 ﻿@model DenunciaModel
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/css/Denuncia.css" asp-append-version="true" />
+@* <link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" /> *@
+@* <link rel="stylesheet" href="~/css/Denuncia.css" asp-append-version="true" /> *@
 
 <h3 class="mb-4">
     <i class="fa-solid fa-bookmark me-2" style="color:lightgreen"></i>
@@ -13,7 +11,6 @@
 <div class="main-content container ">
     <partial name="_Postagem" />
 
-    
     <div class="container mt-4">
         <partial name="_Mapa" />
     </div>
@@ -21,7 +18,7 @@
     <form asp-action="Comentar" method="post" enctype="multipart/form-data" class="text-lg-start mb-4">
 
         <input type="hidden" asp-for="id" />
-       
+
         <span asp-validation-for="mensagem"
               class="text-danger small"></span>
 
@@ -52,7 +49,7 @@
         @foreach (ComentarioModel comentario in Model.comentarios)
         {
             <div data-id="@Model.id" class="card denuncia-card shadow-lg mb-4 card-body">
-               @comentario.mensagem
+                @comentario.mensagem
             </div>
         }
     }
@@ -60,9 +57,4 @@
     {
         <div class="align-content-center">Não há comentários</div>
     }
-
 </div>
-
-<script>
-    $("#txtInput").autogrow();
-</script>

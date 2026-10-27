@@ -79,7 +79,7 @@ namespace VozDoPovo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DenunciaEditada(DenunciaModel model)
+        public async Task<IActionResult> EditarDenuncia(DenunciaModel model)
         {
             if (!ModelState.IsValid)
                 return View();

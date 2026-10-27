@@ -1,67 +1,83 @@
-﻿
+﻿@model DenunciaModel
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map {
+        height: 500px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    .map-coordinates {
+        margin-top: 12px;
+    }
+</style>
+
 <div id="map"></div>
-<div id="x">0</div>
-<div id="y">0</div>
+<div id="x">@Model.latitude</div>
+<div id="y">@Model.longitude</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
-    const initialLatitude = parseFloat(document.getElementById("x").textContent)
-    const initialLongitude = parseFloat(document.getElementById("y").textContent)
+    window.addEventListener('DOMContentLoaded', function() {
+        const initialLatitude = parseFloat(document.getElementById("x").textContent)
+        const initialLongitude = parseFloat(document.getElementById("y").textContent)
 
-    // Create the map.
-    const map = L.map('map').setView(
-        [initialLatitude, initialLongitude],
-        14
-    );
+        // Create the map.
+        const map = L.map('map').setView(
+            [initialLatitude, initialLongitude],
+            14
+        );
 
-    // Load OpenStreetMap tiles.
-    L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        {
-            maxZoom: 19,
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">' +
-                'OpenStreetMap</a> contributors'
-        }
-    ).addTo(map);
+        // Load OpenStreetMap tiles.
+        L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">' +
+                    'OpenStreetMap</a> contributors'
+            }
+        ).addTo(map);
 
     
-    // Create a draggable marker.
-    const marker = L.marker(
-        [initialLatitude, initialLongitude],
-        { draggable: true }
-    ).addTo(map);
+        // Create a draggable marker.
+        const marker = L.marker(
+            [initialLatitude, initialLongitude],
+            { draggable: true }
+        ).addTo(map);
 
-    marker.bindPopup('Localização selecionada').openPopup();
+        marker.bindPopup('Localização selecionada').openPopup();
 
-    // Update the form fields.
-    // const latitudeInput = document.getElementById('Latitude');
-    // const longitudeInput = document.getElementById('Longitude');
+        // Update the form fields.
+        const latitudeInput = document.getElementById('Latitude');
+        const longitudeInput = document.getElementById('Longitude');
 
-    // function updateCoordinates(latitude, longitude) {
-    //     if (latitudeInput!=null) {
-    //         latitudeInput.value = latitude.toFixed(6);
-    //         longitudeInput.value = longitude.toFixed(6);
-    //     }
-    // }
+        function updateCoordinates(latitude, longitude) {
+            if (latitudeInput) {
+                latitudeInput.value = latitude.toFixed(6);
+                longitudeInput.value = longitude.toFixed(6);
+            }
+        }
 
-    // Initialize the fields.
-    // updateCoordinates(initialLatitude, initialLongitude);
+        // Initialize the fields.
+        updateCoordinates(initialLatitude, initialLongitude);
 
-    // Clicking the map moves the marker.
-    map.on('click', function(event) {
-        marker.setLatLng(event.latlng);
+        // Clicking the map moves the marker.
+        map.on('click', function(event) {
+            marker.setLatLng(event.latlng);
 
-        //updateCoordinates(event.latlng.lat, event.latlng.lng);
+            updateCoordinates(event.latlng.lat, event.latlng.lng);
 
-        marker.openPopup();
-    });
+            marker.openPopup();
+        });
 
-    // Dragging the marker updates the coordinates.
-    marker.on('dragend', function(event) {
-        const position = event.target.getLatLng();
+        // Dragging the marker updates the coordinates.
+        marker.on('dragend', function(event) {
+            const position = event.target.getLatLng();
 
-        //updateCoordinates(position.lat, position.lng);
+            updateCoordinates(position.lat, position.lng);
+        });
     });
 </script>
