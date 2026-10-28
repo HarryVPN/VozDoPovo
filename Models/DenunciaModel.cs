@@ -15,8 +15,14 @@ namespace VozDoPovo.Models
         public required string contexto { get; set; } = string.Empty;
         public DateTime data { get; set; }
         public bool anonimo { get; set; }
+        public bool arquivada { get; set; }
 
+        //[NotMapped]
+        //public string sLatitude { get; set; } = string.Empty;
         public double latitude { get; set; } = -8.769666;
+        
+        //[NotMapped]
+        //public string sLongitude { get; set; } = string.Empty;
 
         public double longitude { get; set; } = -63.884296;
 
@@ -44,7 +50,8 @@ namespace VozDoPovo.Models
 //    imagem nvarchar(20),
 //    contexto text not null,
 //    data datetime not null,
-//    anonimo bit,
+//    anonimo bit not null,
+//    arquivada bit not null,
 //    latitude float not null,
 //    longitude float not null
 //)

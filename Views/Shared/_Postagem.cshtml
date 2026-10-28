@@ -17,7 +17,7 @@
             <div class="d-flex align-items-center gap-3">
                 <div class="denuncia-date">
                     <i class="fa-solid fa-location-dot me-2"></i>
-                    Av. Jorge Teixeira
+                    @($"{Model.latitude} {Model.longitude}")
                 </div>
             </div>
 
@@ -62,6 +62,17 @@
 
                 </div>
             }
+
+            
+            @if (ViewBag.map!=null)
+            {
+                <div class="border-bottom"></div>
+
+                <div class="container mt-2 mb-2">
+                    <partial name="_Mapa" />
+                </div>
+            }
+            
 
             @* Botões de baixo *@
             <div class="border-bottom"></div>

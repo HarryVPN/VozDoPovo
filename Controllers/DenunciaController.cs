@@ -1,10 +1,11 @@
-﻿using VozDoPovo.Data;
-using VozDoPovo.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System;
-using System.IO;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Text.Json;
+using VozDoPovo.Data;
+using VozDoPovo.Models;
 
 namespace VozDoPovo.Controllers
 {
@@ -17,21 +18,13 @@ namespace VozDoPovo.Controllers
             _bancoContext = bancoContext;
         }
 
+
         public IActionResult CriarDenuncia()
         {
             return View(new DenunciaModel());
         }
-
-        public IActionResult EditarDenuncia(int id)
-        {
-            DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
-
-            if (denuncia == null) { throw new System.Exception("Id de contato nulo"); }
-            return View(denuncia);
-        }
-
         [HttpPost]
-        public async Task<IActionResult> DenunciaCriada(DenunciaModel model)
+        public async Task<IActionResult> CriarDenuncia(DenunciaModel model)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -63,6 +56,13 @@ namespace VozDoPovo.Controllers
         }
 
 
+        public IActionResult EditarDenuncia(int id)
+        {
+            DenunciaModel? denuncia = _bancoContext.Denuncias.FirstOrDefault(x => x.id == id);
+
+            if (denuncia == null) { throw new System.Exception("Id de contato nulo"); }
+            return View(denuncia);
+        }
         public void DeletarImagemPorNome(string nomeArquivo)
         {
             string arquivo = Path.Combine(
@@ -77,7 +77,6 @@ namespace VozDoPovo.Controllers
                 System.IO.File.Delete(arquivo);
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> EditarDenuncia(DenunciaModel model)
         {
@@ -91,9 +90,7 @@ namespace VozDoPovo.Controllers
 
                 string nomeArquivo = Path.GetRandomFileName() + Path.GetExtension(model.arquivoImg.FileName);
 
-                using var stream = new FileStream(
-                    Path.Combine("wwwroot/images", nomeArquivo),
-                    FileMode.Create);
+                using var stream = new FileStream( Path.Combine("wwwroot/images",nomeArquivo), FileMode.Create);
 
                 model.imagem = nomeArquivo;
 
@@ -101,8 +98,9 @@ namespace VozDoPovo.Controllers
             }
 
             model.data = DateTime.Now;
+            model.arquivada = false;
+            //model.arquivoImg = null;
 
-            model.arquivoImg = null;
             _bancoContext.Denuncias.Update(model);
             _bancoContext.SaveChanges();
 
@@ -120,10 +118,13 @@ namespace VozDoPovo.Controllers
 
             if (denuncia != null)
             {
-                if (denuncia.imagem != null)
-                    DeletarImagemPorNome(denuncia.imagem);
+                //if (denuncia.imagem != null)
+                //    DeletarImagemPorNome(denuncia.imagem);
 
-                _bancoContext.Denuncias.Remove(denuncia);
+                //_bancoContext.Denuncias.Remove(denuncia);
+                //_bancoContext.SaveChanges();
+                denuncia.arquivada = true;
+                _bancoContext.Denuncias.Update(denuncia);
                 _bancoContext.SaveChanges();
             }
 
@@ -166,6 +167,9 @@ namespace VozDoPovo.Controllers
             {
                 denuncia.comentarios = _bancoContext.Comentarios.Where(x => x.idPost == id).ToList();
                 denuncia.comments = denuncia.comentarios.Count();
+
+                ViewBag.map = true;
+
                 return denuncia;
             }
             return null;

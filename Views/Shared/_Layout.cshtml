@@ -118,6 +118,12 @@
                 <i class="fa-solid fa-house"></i>Página Inicial
             </a>
 
+            <a class="nav-link nav-item @(paginaAtual == "Lixeira" ? "active" : "")"
+               asp-controller="Home"
+               asp-action="Lixeira">
+                <i class="fa-solid fa-trash"></i>Lixeira
+            </a>
+
             <a class="nav-link nav-item @(paginaAtual == "CriarDenuncia" ? "active" : "")"
                asp-controller="Denuncia"
                asp-action="CriarDenuncia">

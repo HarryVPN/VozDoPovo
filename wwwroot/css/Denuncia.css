@@ -80,10 +80,6 @@ body {
     background-color: #0f172a;
 }
 
-.border-bottom {
-    border-color: #334155 !important;
-}
-
 .btn-outline-primary {
     border-width: 2px;
 }

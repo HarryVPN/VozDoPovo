@@ -15,8 +15,8 @@
 </style>
 
 <div id="map"></div>
-<div id="x">@Model.latitude</div>
-<div id="y">@Model.longitude</div>
+<a id="x" hidden="hidden">@Model.latitude</a>
+<a id="y" hidden="hidden">@Model.longitude</a>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -47,10 +47,8 @@
             [initialLatitude, initialLongitude],
             { draggable: true }
         ).addTo(map);
-
-        marker.bindPopup('Localização selecionada').openPopup();
-
-        // Update the form fields.
+        
+            // Update the form fields.
         const latitudeInput = document.getElementById('Latitude');
         const longitudeInput = document.getElementById('Longitude');
 
@@ -64,20 +62,25 @@
         // Initialize the fields.
         updateCoordinates(initialLatitude, initialLongitude);
 
-        // Clicking the map moves the marker.
-        map.on('click', function(event) {
-            marker.setLatLng(event.latlng);
+        if (document.getElementById('edit')) {
+            // Clicking the map moves the marker.
+            marker.bindPopup('Localização selecionada').openPopup();
 
-            updateCoordinates(event.latlng.lat, event.latlng.lng);
+            map.on('click', function(event) {
+                marker.setLatLng(event.latlng);
 
-            marker.openPopup();
-        });
+                updateCoordinates(event.latlng.lat, event.latlng.lng);
 
-        // Dragging the marker updates the coordinates.
-        marker.on('dragend', function(event) {
-            const position = event.target.getLatLng();
+                marker.openPopup();
+            });
 
-            updateCoordinates(position.lat, position.lng);
-        });
+            // Dragging the marker updates the coordinates.
+            marker.on('dragend', function(event) {
+                const position = event.target.getLatLng();
+
+                updateCoordinates(position.lat, position.lng);
+            });
+        }
+        
     });
 </script>

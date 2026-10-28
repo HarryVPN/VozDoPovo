@@ -90,38 +90,37 @@
             Você também pode arrastar o marcador.
         </p>
 
+        <a id="edit" type="hidden"></a>
         <partial name="_Mapa" />
 
         <div class="row map-coordinates">
-            <div class="col-md-6 mb-3">
+            <a class="col-md-6">
                 <label asp-for="latitude" class="form-label">
                     Latitude
                 </label>
 
-                <input asp-for="latitude"
+                <input asp-for="latitude" type="number"
                        id="Latitude"
-                       class="form-control"
-                       readonly
                        step="any" />
 
                 <span asp-validation-for="latitude"
                       class="text-danger"></span>
-            </div>
 
-            <div class="col-md-6 mb-3">
+
+            </a>
+
+            <a class="col-md-6">
                 <label asp-for="longitude" class="form-label">
                     Longitude
                 </label>
 
-                <input asp-for="longitude"
+                <input asp-for="longitude" type="number"
                        id="Longitude"
-                       class="form-control"
-                       readonly
                        step="any" />
 
                 <span asp-validation-for="longitude"
                       class="text-danger"></span>
-            </div>
+            </a>
         </div>
 
     </div>
@@ -137,7 +136,7 @@
             Cancelar
         </a>
 
-        @if (ViewContext.RouteData.Values["action"]?.ToString() == "EditarDenuncia")
+        @if (ViewContext.RouteData.Values["action"]?.ToString() == "EditarDenuncia" && !Model.arquivada)
         {
 
             <a asp-controller="Denuncia"
@@ -154,9 +153,28 @@
                 class="btn btn-primary rounded-pill px-4">
 
             <i class="fa-solid fa-floppy-disk me-2"></i>
-            Salvar
+            @(Model.arquivada ? "Desarquivar" : "Salvar")
         </button>
 
     </div>
 
 </div>
+
+<script>
+    const imagemInput = document.getElementById('imagemInput');
+    const preview = document.getElementById('preview');
+
+    imagemInput.addEventListener('change', function() {
+
+        const file = this.files[0];
+
+        if (!file) {
+            preview.src = '';
+            preview.classList.add('d-none');
+            return;
+        }
+
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('d-none');
+    });
+</script>

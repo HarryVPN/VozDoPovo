@@ -16,13 +16,23 @@ namespace VozDoPovo.Controllers
 
         public IActionResult Index()
         {
-            List<DenunciaModel> denuncias = _bancoContext.Denuncias.ToList();
+            List<DenunciaModel> denuncias = _bancoContext.Denuncias.Where(x => !x.arquivada).ToList();
             
             foreach(DenunciaModel denuncia in denuncias)
             {
                 denuncia.comments = _bancoContext.Comentarios.Where(x => x.idPost == denuncia.id).Count();
             }
+            return View(denuncias);
+        }
 
+        public IActionResult Lixeira()
+        {
+            List<DenunciaModel> denuncias = _bancoContext.Denuncias.Where(x => x.arquivada).ToList();
+
+            foreach (DenunciaModel denuncia in denuncias)
+            {
+                denuncia.comments = _bancoContext.Comentarios.Where(x => x.idPost == denuncia.id).Count();
+            }
             return View(denuncias);
         }
 
