@@ -1,0 +1,119 @@
+﻿@Html.AntiForgeryToken()
+@model PerfilModel
+
+<link rel="stylesheet" href="~/css/Formulario.css" asp-append-version="true" />
+
+@{
+    string? pagina = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+@if (TempData["a"] != null)
+{
+    <div role="alert" class="alert alert-success">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="Close">X</button>
+        @TempData["a"]
+    </div>
+}
+
+<div class="container card denuncia-form border-0 shadow-lg card-body p-lg-5">
+
+    <div>
+        <label asp-for="nome" class="form-label">
+            Nome
+        </label>
+
+        @Html.EditorFor(model => model.nome, new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control dark-input mb-1",
+                placeholder = "Seu nome de usuário",
+                required = true,
+                rows = 1
+            }
+        })
+
+        <span asp-validation-for="nome" class="text-danger small"></span>
+
+        <br>
+        <label asp-for="senha" class="form-label">
+            Senha
+        </label>
+
+        @Html.EditorFor(model => model.senha, new
+        {
+            htmlAttributes = new
+            {
+                @class = "form-control dark-input mb-2",
+                placeholder = "Senha da sua conta",
+                required = true,
+                rows = 1
+            }
+        })
+
+        @* <textarea asp-for="nome"
+                      required
+                      rows="1"
+                      id="contexto"
+                      class="form-control "
+                      placeholder="Senha da sua conta">
+              </textarea> *@
+
+        <span asp-validation-for="senha" class="text-danger small"></span>
+
+    </div>
+
+   
+    <div class="d-flex align-items-center gap-3">
+        <div class="denuncia-date">
+            <i class="fa-solid fa-calendar-days me-2"></i>
+            Voz do Povo não garante segurança com suas informações
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-3">
+
+        @if (pagina == "Index")
+        {
+            <a asp-controller="Home"
+               asp-action="Reddit"
+               class="btn btn-outline-secondary rounded-pill px-4">
+
+                <i class="fa-solid fa-x me-1"></i>
+                Entrar sem Perfil
+            </a>
+
+            <a asp-controller="Home"
+               asp-action="CriarPerfil"
+               class="btn btn-success rounded-pill px-4">
+
+                <i class="fa-solid fa-floppy-disk me-1"></i>
+                Criar Perfil
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary rounded-pill px-4">
+
+                <i class="fa-solid fa-right-to-bracket me-1"></i>
+                Login
+            </button>
+        }
+        else
+        {//criar conta
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-secondary rounded-pill px-4">
+
+                <i class="fa-solid fa-x me-1"></i>
+                Voltar para Login
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary rounded-pill px-4">
+
+                <i class="fa-solid fa-floppy-disk me-1"></i>
+                Criar Perfil
+            </button>
+        }
+    </div>
+</div>

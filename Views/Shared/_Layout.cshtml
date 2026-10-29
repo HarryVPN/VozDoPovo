@@ -110,11 +110,11 @@
 
         <nav class="nav-menu">
             @{
-                var paginaAtual = ViewContext.RouteData.Values["action"]?.ToString();
+                string? paginaAtual = ViewContext.RouteData.Values["action"]?.ToString();
             }
-            <a class="nav-link nav-item @(paginaAtual == "Index" ? "active" : "")"
+            <a class="nav-link nav-item @(paginaAtual == "Reddit" ? "active" : "")"
                asp-controller="Home"
-               asp-action="Index">
+               asp-action="Reddit">
                 <i class="fa-solid fa-house"></i>Página Inicial
             </a>
 
@@ -130,9 +130,9 @@
                 <i class="fa-solid fa-plus-circle"></i>Fazer Denúncia
             </a>
 
-            <a class="nav-link nav-item @(paginaAtual == "..." ? "active" : "")"
+            <a class="nav-link nav-item @(paginaAtual == "CriarPerfil" ? "active" : "")"
                asp-controller="Home"
-               asp-action="Index">
+               asp-action="CriarPerfil">
                 <i class="fa-solid fa-solid fa-user"></i>Cadastrar
             </a>
 

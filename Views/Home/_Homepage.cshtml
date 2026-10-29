@@ -6,12 +6,8 @@
 
 @{
     bool lixeira = ViewContext.RouteData.Values["action"]?.ToString() == "Lixeira";
+    // ComentarioModel teste = ViewBag.teste;
 }
-
-<h3>
-    <i class="fa-solid fa-list me-2"></i>
-    @(lixeira ? "Denúncias Arquivadas" : "Denúncias Recentes")
-</h3>
 
 @* Leitura de placas *@
 @* <div id="print"></div>

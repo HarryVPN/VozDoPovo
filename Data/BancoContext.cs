@@ -13,6 +13,6 @@ namespace VozDoPovo.Data
 
         public DbSet<DenunciaModel> Denuncias { get; set; }
         public DbSet<ComentarioModel> Comentarios { get; set; }
-        //public DbSet<UserModel> Users { get; set; }
+        public DbSet<PerfilModel> Perfis { get; set; }
     }
 }

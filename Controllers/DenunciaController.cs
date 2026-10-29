@@ -52,7 +52,7 @@ namespace VozDoPovo.Controllers
                 new JsonDenuncia { id = model.id }
             );
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Reddit", "Home");
         }
 
 
@@ -108,7 +108,7 @@ namespace VozDoPovo.Controllers
                 new JsonDenuncia { id = model.id }
             );
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Reddit", "Home");
         }
 
         //[HttpGet]
@@ -128,7 +128,7 @@ namespace VozDoPovo.Controllers
                 _bancoContext.SaveChanges();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Reddit", "Home");
         }
 
         private IActionResult LikeDislike(int id, string url, bool like)

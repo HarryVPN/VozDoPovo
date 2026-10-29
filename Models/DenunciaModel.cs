@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace VozDoPovo.Models
@@ -43,15 +41,17 @@ namespace VozDoPovo.Models
         public int id { get; set; }
     }
 }
-//create table Denuncias (
-//	id int primary key identity,
-//    likes tinyint not null,
-//    dislikes tinyint not null,
-//    imagem nvarchar(20),
-//    contexto text not null,
-//    data datetime not null,
-//    anonimo bit not null,
-//    arquivada bit not null,
-//    latitude float not null,
-//    longitude float not null
-//)
+/*
+create table Denuncias (
+	id int primary key identity,
+    likes tinyint not null,
+    dislikes tinyint not null,
+    imagem nvarchar(20),
+    contexto text not null,
+    data datetime not null,
+    anonimo bit not null,
+    arquivada bit not null,
+    latitude float not null,
+    longitude float not null
+)
+*/

@@ -3,12 +3,11 @@
     public static class MeusIDs
     {
         public const string Sucesso = "s1";
-
     }
 
-    public enum IDsCargos
+    public enum IdCargos : byte
     {
-        Guest = 1,
+        Membro = 1,
         Admin = 2
     }
 }
