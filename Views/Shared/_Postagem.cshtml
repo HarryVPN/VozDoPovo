@@ -25,19 +25,21 @@
                 <div class="denuncia-date">
                     <i class="fa-solid fa-person me-2"></i>
 
-                    @(Model.anonimo ? "Anônimo" : "Fulano Ciclano")
+                    @(Model.anonimo ? "Anônimo" : Model.nome)
                 </div>
             </div>
 
-            <a class="btn btn-outline-primary rounded-pill px-4"
-               asp-controller="Denuncia"
-               asp-action="EditarDenuncia"
-               asp-route-id="@Model.id">
+            @if (User.Identity != null && User.Identity.Name == Model.nome)
+            {
+                <a class="btn btn-outline-primary rounded-pill px-4"
+                   asp-controller="Denuncia"
+                   asp-action="EditarDenuncia"
+                   asp-route-id="@Model.id">
 
-                <i class="fa-solid fa-pen-to-square me-2"></i>
-                Editar
-            </a>
-
+                    <i class="fa-solid fa-pen-to-square me-2"></i>
+                    Editar
+                </a>
+            }
         </div>
 
         <div class="row">
@@ -47,7 +49,6 @@
                 <div class="denuncia-content">
                     @Model.contexto
                 </div>
-
             </div>
 
             @if (Model.imagem != null)
@@ -62,7 +63,6 @@
 
                 </div>
             }
-
             
             @if (ViewBag.map!=null)
             {
@@ -72,7 +72,6 @@
                     <partial name="_Mapa" />
                 </div>
             }
-            
 
             @* Botões de baixo *@
             <div class="border-bottom"></div>

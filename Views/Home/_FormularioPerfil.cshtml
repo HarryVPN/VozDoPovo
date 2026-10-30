@@ -76,19 +76,19 @@
         @if (pagina == "Index")
         {
             <a asp-controller="Home"
-               asp-action="Reddit"
-               class="btn btn-outline-secondary rounded-pill px-4">
-
-                <i class="fa-solid fa-x me-1"></i>
-                Entrar sem Perfil
-            </a>
-
-            <a asp-controller="Home"
                asp-action="CriarPerfil"
                class="btn btn-success rounded-pill px-4">
 
                 <i class="fa-solid fa-floppy-disk me-1"></i>
                 Criar Perfil
+            </a>
+            
+            <a asp-controller="Home"
+               asp-action="Reddit"
+               class="btn btn-outline-secondary rounded-pill px-4">
+
+                <i class="fa-solid fa-x me-1"></i>
+                Entrar sem Perfil
             </a>
 
             <button type="submit"
@@ -104,12 +104,12 @@
                asp-action="Index"
                class="btn btn-outline-secondary rounded-pill px-4">
 
-                <i class="fa-solid fa-x me-1"></i>
+                <i class="fa-solid fa-arrow-left me-1"></i>
                 Voltar para Login
             </a>
 
             <button type="submit"
-                    class="btn btn-primary rounded-pill px-4">
+                    class="btn btn-success rounded-pill px-4">
 
                 <i class="fa-solid fa-floppy-disk me-1"></i>
                 Criar Perfil

@@ -7,6 +7,7 @@ namespace VozDoPovo.Models
     public class DenunciaModel()
     {
         public int id { get; set; }
+        public int perfil { get; set; }
         public byte likes { get; set; } = 0;
         public byte dislikes { get; set; } = 0;
         public string? imagem { get; set; }
@@ -33,6 +34,10 @@ namespace VozDoPovo.Models
         [NotMapped]
         public virtual int comments { get; set; } = 0;
 
+        [NotMapped]
+        public virtual string nome { get; set; } = string.Empty;
+
+
         [NotMapped]//não é utilizado nesta classe, existe somente para ser usado no form do ComentarioModel
         public virtual string? mensagem { get; set; }
     }
@@ -44,6 +49,7 @@ namespace VozDoPovo.Models
 /*
 create table Denuncias (
 	id int primary key identity,
+    perfil int not null,
     likes tinyint not null,
     dislikes tinyint not null,
     imagem nvarchar(20),

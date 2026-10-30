@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using VozDoPovo.Data;
 using VozDoPovo.Models;
+using System.Security.Principal;
 
 namespace VozDoPovo.Controllers
 {
@@ -51,6 +52,7 @@ namespace VozDoPovo.Controllers
             {
                 new Claim(ClaimTypes.Name, perfil.nome),
                 new Claim(ClaimTypes.Role, perfil.cargo.ToString()),
+                new Claim(ClaimTypes.UserData, perfil.id.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(
@@ -83,6 +85,14 @@ namespace VozDoPovo.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
             return RedirectToAction("Reddit", "Home");
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult CriarPerfil()
@@ -118,6 +128,11 @@ namespace VozDoPovo.Controllers
             foreach (DenunciaModel denuncia in denuncias)
             {
                 denuncia.comments = _bancoContext.Comentarios.Where(x => x.idPost == denuncia.id).Count();
+                PerfilModel? perfil = _bancoContext.Perfis.Where(x => x.id == denuncia.perfil).FirstOrDefault();
+                if (perfil != null)
+                {
+                    denuncia.nome = perfil.nome;
+                }
             }
             ViewBag.teste = _bancoContext.Comentarios.FirstOrDefault();
             return View(denuncias);

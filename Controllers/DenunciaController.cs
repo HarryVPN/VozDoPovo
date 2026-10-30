@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using System;
-using System.Globalization;
-using System.IO;
 using System.Text.Json;
 using VozDoPovo.Data;
 using VozDoPovo.Models;
@@ -21,7 +17,10 @@ namespace VozDoPovo.Controllers
 
         public IActionResult CriarDenuncia()
         {
-            return View(new DenunciaModel());
+            if (User.EstaLogado())
+                return View(new DenunciaModel());
+            else
+                return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public async Task<IActionResult> CriarDenuncia(DenunciaModel model)
